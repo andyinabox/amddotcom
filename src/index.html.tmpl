@@ -2,14 +2,13 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>{{ .Content.Data.Title }}</title>
+    <title>{{ .SiteData.Title }}</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="stylesheet" href="/styles.css" />
     <script>
-      window.AMD.Content = {{ .ContentJSON }};
     </script>
   </head>
   <body>
@@ -19,7 +18,7 @@
       <label id="btn-more" for="slider">More</label>
     </header>
     <main id="main">
-      <section class="bio">{{ .Content.BioMd.Parsed }}</section>
+      <section class="bio">{{ .Pages.BioMd.Parsed }}</section>
     </main>
     <script src="/script.js"></script>
   </body>

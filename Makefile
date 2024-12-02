@@ -1,11 +1,12 @@
 
 .PHONY: build
-build: clean publish/content.json
+build: clean
+	go run cmd/build/main.go
 
 .PHONY: clean
 clean:
 	rm -rf publish
 
-publish/content.json:
-	go run cmd/parse-content/main.go -i content
+# publish/content.json:
+# 	go run cmd/parse-content/main.go -i content
 

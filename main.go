@@ -1,4 +1,4 @@
-package amdvanilla
+package amddotcom
 
 import (
 	"embed"
@@ -6,51 +6,29 @@ import (
 )
 
 //go:embed content/*
-var ContentDir embed.FS
+var ContentFS embed.FS
 
 //go:embed src/*
-var SrcDir embed.FS
+var SrcFS embed.FS
 
-type ContentData struct {
-	Name string `json:"name"`
+type SiteData struct {
+	Title string `json:"title"`
 }
 
-type ContentMarkdown struct {
-	Raw    string        `json:"raw"`
-	Parsed template.HTML `json:"parsed"`
-}
-
-type Content struct {
-	Data  ContentData     `json:"data"`
-	BioXS ContentMarkdown `json:"bio-xs"`
-	BioSM ContentMarkdown `json:"bio-sm"`
-	BioMD ContentMarkdown `json:"bio-md"`
-	BioLG ContentMarkdown `json:"bio-lg"`
-	BioXL ContentMarkdown `json:"bio-xl"`
+type MarkdownFile struct {
+	Raw    []byte
+	Parsed template.HTML
 }
 
 type Context struct {
-	Content     Content
-	ContentJSON template.JS
+	SiteData SiteData
+	Pages    map[string]MarkdownFile
 }
 
-func LoadContent() (*Content, error) {
+type ContextService interface {
+	GetContext() (*Context, error)
+}
 
-	files, err := ContentDir.ReadDir("content")
-	if err != nil {
-		return nil, err
-	}
-
-	for _, file := range files {
-		switch file.Name() {
-		case "data.json":
-		case "bio-xs.md":
-		case "bio-sm.md":
-		case "bio-md.md":
-		case "bio-lg.md":
-		case "bio-xl.md":
-		}
-	}
-
-	return nil, nil
+type BuildService interface {
+	Build(*Context) error
 }
