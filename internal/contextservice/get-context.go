@@ -2,6 +2,7 @@ package contextservice
 
 import (
 	"encoding/json"
+	"html/template"
 	"io/fs"
 	"path/filepath"
 	"strings"
@@ -49,6 +50,14 @@ func (s *Service) GetContext() (ctx *amddotcom.Context, err error) {
 		}
 
 	}
+
+	var b []byte
+	b, err = json.Marshal(ctx)
+	if err != nil {
+		return
+	}
+
+	ctx.JSONData = template.JS(string(b))
 
 	return
 }

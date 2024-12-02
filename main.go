@@ -16,13 +16,14 @@ type SiteData struct {
 }
 
 type MarkdownFile struct {
-	Raw    []byte
-	Parsed template.HTML
+	Raw    []byte        `json:"-"`
+	Parsed template.HTML `json:"parsed"`
 }
 
 type Context struct {
-	SiteData SiteData
-	Pages    map[string]MarkdownFile
+	SiteData SiteData                `json:"siteData"`
+	Pages    map[string]MarkdownFile `json:"pages"`
+	JSONData template.JS             `json:"-"`
 }
 
 type ContextService interface {
