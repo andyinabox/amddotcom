@@ -20,7 +20,7 @@
       <section class="bio">{{ .Pages.BioMd.Parsed }}</section>
     </main>
     <script>
-      window.AMD.Context = {{ .JSONData }}
+      window.AMD = {{ .JSONData }}
     </script>
     <script src="/script.js"></script>
   </body>
