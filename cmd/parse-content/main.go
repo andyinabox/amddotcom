@@ -9,6 +9,8 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/iancoleman/strcase"
 )
 
 type jsonData map[string]json.RawMessage
@@ -119,7 +121,8 @@ func parseContent(inputPath, outputPath, outputFileName string) (err error) {
 func getFileName(p string) string {
 	base := filepath.Base(p)
 	parts := strings.Split(base, ".")
-	return parts[0]
+	name := parts[0]
+	return strcase.ToCamel(name)
 }
 
 func parseMarkdownFile(p string) (data markdownData, err error) {
