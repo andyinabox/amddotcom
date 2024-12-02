@@ -4,23 +4,24 @@ import (
 	"encoding/json"
 	"html/template"
 	"io/fs"
+	"os"
 	"path/filepath"
 	"strings"
 
-	"github.com/amddotcom"
+	"github.com/amddotcom/internal"
 	"github.com/iancoleman/strcase"
 )
 
-func (s *Service) GetContext() (ctx *amddotcom.Context, err error) {
+func (s *Service) GetContext() (ctx *internal.Context, err error) {
 
-	files, err := s.fs.ReadDir(s.conf.ContentPath)
+	files, err := os.ReadDir(s.conf.ContentPath)
 	if err != nil {
 		return
 	}
 
-	ctx = &amddotcom.Context{
-		SiteData: amddotcom.SiteData{},
-		Pages:    make(map[string]amddotcom.MarkdownFile),
+	ctx = &internal.Context{
+		SiteData: internal.SiteData{},
+		Pages:    make(map[string]internal.MarkdownFile),
 	}
 
 	for _, file := range files {
@@ -28,7 +29,7 @@ func (s *Service) GetContext() (ctx *amddotcom.Context, err error) {
 		// load site metadata
 		if file.Name() == s.conf.SiteDataFileName {
 			var b []byte
-			b, err = s.fs.ReadFile(filepath.Join(s.conf.ContentPath, file.Name()))
+			b, err = os.ReadFile(filepath.Join(s.conf.ContentPath, file.Name()))
 			if err != nil {
 				return
 			}
@@ -41,7 +42,7 @@ func (s *Service) GetContext() (ctx *amddotcom.Context, err error) {
 
 		// load markdown pages
 		if filepath.Ext(file.Name()) == ".md" {
-			var m *amddotcom.MarkdownFile
+			var m *internal.MarkdownFile
 			m, err = s.loadMdFile(file)
 			if err != nil {
 				return

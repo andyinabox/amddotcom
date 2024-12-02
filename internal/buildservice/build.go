@@ -8,12 +8,12 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/amddotcom"
+	"github.com/amddotcom/internal"
 )
 
-func (s *Service) Build(ctx *amddotcom.Context) (err error) {
+func (s *Service) Build(ctx *internal.Context) (err error) {
 
-	files, err := s.fs.ReadDir(s.conf.SrcPath)
+	files, err := os.ReadDir(s.conf.SrcPath)
 	if err != nil {
 		return
 	}
@@ -38,7 +38,7 @@ func (s *Service) Build(ctx *amddotcom.Context) (err error) {
 func (s *Service) copyFile(f fs.DirEntry) (err error) {
 
 	var b []byte
-	b, err = s.fs.ReadFile(filepath.Join(s.conf.SrcPath, f.Name()))
+	b, err = os.ReadFile(filepath.Join(s.conf.SrcPath, f.Name()))
 	if err != nil {
 		return
 	}
@@ -49,9 +49,9 @@ func (s *Service) copyFile(f fs.DirEntry) (err error) {
 	return
 }
 
-func (s *Service) parseHtmlTemplate(f fs.DirEntry, ctx *amddotcom.Context) (err error) {
+func (s *Service) parseHtmlTemplate(f fs.DirEntry, ctx *internal.Context) (err error) {
 	var b []byte
-	b, err = s.fs.ReadFile(filepath.Join(s.conf.SrcPath, f.Name()))
+	b, err = os.ReadFile(filepath.Join(s.conf.SrcPath, f.Name()))
 	if err != nil {
 		return
 	}

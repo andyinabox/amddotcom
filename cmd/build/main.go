@@ -5,14 +5,14 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/amddotcom"
+	"github.com/amddotcom/internal"
 	"github.com/amddotcom/internal/buildservice"
 	"github.com/amddotcom/internal/contextservice"
 )
 
 func main() {
-	var contextService amddotcom.ContextService
-	var buildService amddotcom.BuildService
+	var contextService internal.ContextService
+	var buildService internal.BuildService
 
 	cwd, err := os.Getwd()
 	if err != nil {
@@ -26,17 +26,15 @@ func main() {
 	}
 
 	contextService = contextservice.New(
-		amddotcom.ContentFS,
 		&contextservice.Config{
-			ContentPath:      "content",
+			ContentPath:      filepath.Join(cwd, "content"),
 			SiteDataFileName: "data.json",
 		},
 	)
 
 	buildService = buildservice.New(
-		amddotcom.SrcFS,
 		&buildservice.Config{
-			SrcPath:    "src",
+			SrcPath:    filepath.Join(cwd, "src"),
 			OutputPath: outputPath,
 		},
 	)

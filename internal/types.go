@@ -1,15 +1,6 @@
-package amddotcom
+package internal
 
-import (
-	"embed"
-	"html/template"
-)
-
-//go:embed content/*
-var ContentFS embed.FS
-
-//go:embed src/*
-var SrcFS embed.FS
+import "html/template"
 
 type SiteData struct {
 	Title string `json:"title"`

@@ -3,23 +3,24 @@ package contextservice
 import (
 	"html/template"
 	"io/fs"
+	"os"
 	"path/filepath"
 
-	"github.com/amddotcom"
+	"github.com/amddotcom/internal"
 	"github.com/russross/blackfriday/v2"
 )
 
-func (s *Service) loadMdFile(entry fs.DirEntry) (data *amddotcom.MarkdownFile, err error) {
+func (s *Service) loadMdFile(entry fs.DirEntry) (data *internal.MarkdownFile, err error) {
 	var b []byte
 
-	b, err = s.fs.ReadFile(filepath.Join(s.conf.ContentPath, entry.Name()))
+	b, err = os.ReadFile(filepath.Join(s.conf.ContentPath, entry.Name()))
 	if err != nil {
 		return
 	}
 
 	parsed := blackfriday.Run(b)
 
-	data = &amddotcom.MarkdownFile{
+	data = &internal.MarkdownFile{
 		Raw:    b,
 		Parsed: template.HTML(string(parsed)),
 	}
