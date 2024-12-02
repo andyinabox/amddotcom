@@ -1,0 +1,1 @@
+I’m a creative person with many different passions, projects, and hobbies. I help build the software at Lighter, and spend a lot of my spare time on my bicycle. I also just relocated to Barcelona!
