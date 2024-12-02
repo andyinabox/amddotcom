@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>{{ .Data.Title }}</title>
+    <title>{{ .Content.Data.Title }}</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -19,7 +19,7 @@
       <label id="btn-more" for="slider">More</label>
     </header>
     <main id="main">
-      <section class="bio">{{ .BioMd.Parsed }}</section>
+      <section class="bio">{{ .Content.BioMd.Parsed }}</section>
     </main>
     <script src="/script.js"></script>
   </body>
