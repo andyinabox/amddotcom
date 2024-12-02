@@ -1,3 +1,4 @@
 {
-  "title": "andydayton.com"
+  "title": "andydayton.com",
+  "nested": [1, 2, 3]
 }

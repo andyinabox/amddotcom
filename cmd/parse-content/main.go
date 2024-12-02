@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/iancoleman/strcase"
+	"github.com/russross/blackfriday/v2"
 )
 
 type jsonData map[string]json.RawMessage
@@ -25,21 +26,23 @@ type outputDataFormat struct {
 
 func main() {
 	var inputPath, outputPath, outputFileName string
+	var pretty bool
 
 	flag.StringVar(&inputPath, "i", "", "input dir path")
 	flag.StringVar(&outputPath, "o", "publish", "output dir path")
 	flag.StringVar(&outputFileName, "n", "content.json", "output file name")
+	flag.BoolVar(&pretty, "pretty", true, "pretty print output json")
 
 	flag.Parse()
 
-	err := parseContent(inputPath, outputPath, outputFileName)
+	err := parseContent(inputPath, outputPath, outputFileName, pretty)
 	if err != nil {
 		panic(err)
 	}
 
 }
 
-func parseContent(inputPath, outputPath, outputFileName string) (err error) {
+func parseContent(inputPath, outputPath, outputFileName string, pretty bool) (err error) {
 	if inputPath == "" {
 		err = errors.New("no input path provided")
 		return
@@ -109,9 +112,19 @@ func parseContent(inputPath, outputPath, outputFileName string) (err error) {
 		return
 	}
 
-	b, err := json.Marshal(output)
-	if err != nil {
-		return
+	var b []byte
+	if pretty {
+		b, err = json.MarshalIndent(output, "", "\t")
+		if err != nil {
+			return
+		}
+
+	} else {
+		b, err = json.Marshal(output)
+		if err != nil {
+			return
+		}
+
 	}
 
 	err = os.WriteFile(filepath.Join(outputPath, outputFileName), b, fs.ModePerm)
@@ -133,9 +146,11 @@ func parseMarkdownFile(p string) (data markdownData, err error) {
 		return
 	}
 
+	parsed := blackfriday.Run(b)
+
 	data = markdownData{
 		Raw:    string(b),
-		Parsed: "",
+		Parsed: string(parsed),
 	}
 
 	return
