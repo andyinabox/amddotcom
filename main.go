@@ -2,8 +2,6 @@ package amdvanilla
 
 import (
 	"embed"
-	"errors"
-	"fmt"
 	"html/template"
 )
 
@@ -44,16 +42,15 @@ func LoadContent() (*Content, error) {
 	}
 
 	for _, file := range files {
-		fmt.Println(file.Name())
+		switch file.Name() {
+		case "data.json":
+		case "bio-xs.md":
+		case "bio-sm.md":
+		case "bio-md.md":
+		case "bio-lg.md":
+		case "bio-xl.md":
+		}
 	}
 
-	return nil, errors.New("not implemented")
-}
-
-func main() {
-	_, err := LoadContent()
-
-	if err != nil {
-		panic(err)
-	}
+	return nil, nil
 }
