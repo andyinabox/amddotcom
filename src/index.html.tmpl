@@ -2,12 +2,15 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>{{ .Content.JsonFiles.Content.Title }}</title>
+    <title>{{ .Data.Title }}</title>
     <meta name="description" content="" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="stylesheet" href="/styles.css" />
+    <script>
+      window.AMD.Content = {{ .ContentJSON }};
+    </script>
   </head>
   <body>
     <header>
@@ -16,11 +19,7 @@
       <label id="btn-more" for="slider">More</label>
     </header>
     <main id="main">
-      <section class="bio" id="bio1"></section>
-      <section class="bio" id="bio2"></section>
-      <section class="bio" id="bio3"></section>
-      <section class="bio" id="bio4"></section>
-      <section class="bio" id="bio5"></section>
+      <section class="bio">{{ .BioMd.Parsed }}</section>
     </main>
     <script src="/script.js"></script>
   </body>
