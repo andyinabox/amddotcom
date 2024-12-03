@@ -3,10 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <title>{{ .SiteData.Title }}</title>
+
     <meta name="description" content="{{ .Pages.BioMD.Text }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+
+    <!-- styles -->
     <link rel="stylesheet" href="/styles.css" />
     <style>
       :root {
@@ -17,20 +20,24 @@
         --amd-font-size-bio-xl: {{ .SiteData.BioFontSizeXl }};
       }
     </style>
+    <!-- /styles -->
+
   </head>
   <body>
 
+    <!-- main stuff -->
     <header class="header-main">
-      <label class="btn btn-more" id="btn-less" for="slider">Less</label>
+      <label class="btn btn-less" id="btn-less" for="slider">Less</label>
       <input class="slider" id="slider" type="range" value="3" min="1" max="5" step="0.01" />
-      <label class="btn btn-less" id="btn-more" for="slider">More</label>
+      <label class="btn btn-more" id="btn-more" for="slider">More</label>
     </header>
 
     <main>
       <section class="bio-container bio-md" id="bio-container">{{ .Pages.BioMD.HTML }}</section>
     </main>
 
-    <time id="publish-date" class="publish-date" datetime="{{ .BuildData.Time }}">{{ .BuildData.TimeFormatted }}</time>
+    <time id="publish-date" class="publish-date" title="Last updated {{ .BuildData.TimeFormatted }}" datetime="{{ .BuildData.Time }}">{{ .BuildData.TimeFormatted }}</time>
+    <!-- /main stuff -->
 
     <!-- templates -->
     <template id="tmpl-bio-xs">{{ .Pages.BioXS.HTML }}</template>
@@ -38,7 +45,11 @@
     <template id="tmpl-bio-md">{{ .Pages.BioMD.HTML }}</template>
     <template id="tmpl-bio-lg">{{ .Pages.BioLG.HTML }}</template>
     <template id="tmpl-bio-xl">{{ .Pages.BioXL.HTML }}</template>
+    <!-- /templates -->
 
+    <!-- sourcery -->
     <script src="/script.js"></script>
+    <!-- /sourcery -->
+
   </body>
 </html>

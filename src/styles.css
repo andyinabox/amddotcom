@@ -49,6 +49,7 @@ header.header-main {
 }
 
 input.slider {
+  cursor: ew-resize;
   flex-grow: 1;
 }
 
@@ -56,17 +57,25 @@ label.btn {
   font-family: var(--amd-font-family-secondary);
   font-weight: 700;
   text-transform: uppercase;
-  cursor: pointer;
   padding: 0.5rem;
+}
+
+.btn-less {
+  cursor: zoom-out;
+}
+.btn-more {
+  cursor: zoom-in;
 }
 
 main {
   flex-grow: 1;
   padding-left: 1rem;
   padding-right: 1rem;
+  overflow: hidden;
 }
 
 .publish-date {
+  cursor: wait;
   text-align: center;
   font-size: 0.6rem;
   padding: 0.75em;
@@ -74,6 +83,10 @@ main {
   opacity: 0.3;
   text-transform: uppercase;
   letter-spacing: 0.1em;
+}
+
+.bio-container {
+  transition: font-size 100ms;
 }
 
 .bio-container.bio-xs {

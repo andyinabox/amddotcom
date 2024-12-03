@@ -68,13 +68,15 @@
 
   // not very scientific night mode logic
   const hour = new Date().getHours()
-  if (hour < 8 || hour > 6) {
-    const linkEl = document.createElement('link')
-    linkEl.rel = 'stylesheet'
-    linkEl.href = '/night.css'
-    document.body.appendChild(linkEl)
-  }
+  if (hour < 7 || hour >= 7) enableNightMode()
 })()
+
+function enableNightMode() {
+  const linkEl = document.createElement('link')
+  linkEl.rel = 'stylesheet'
+  linkEl.href = '/night.css'
+  document.body.appendChild(linkEl)
+}
 
 function getTimeSince(pubDate, defaultString) {
   const nowDate = new Date()
@@ -89,6 +91,7 @@ function getTimeSince(pubDate, defaultString) {
       return `${d} years ago`
     }
   }
+
   // more than a month old
   if (diff > 1000 * 60 * 60 * 24 * 28) {
     const nowMonth = nowDate.getMonth()
@@ -115,6 +118,7 @@ function getTimeSince(pubDate, defaultString) {
       return `${d} days ago`
     }
   }
+
   // more than an hour old
   if (diff > 1000 * 60 * 60) {
     const d = Math.floor(diff / (1000 * 60 * 60))
@@ -140,5 +144,6 @@ function getTimeSince(pubDate, defaultString) {
     return 'just now'
   }
 
+  // when in doubt, use the default string
   return defaultString
 }
