@@ -14,14 +14,12 @@ type MarkdownFile struct {
 	Source string
 	Text   string
 	HTML   template.HTML
-	Meta   map[string]string
 }
 
 type Context struct {
 	BuildData BuildData
 	SiteData  map[string]string
 	Pages     map[string]MarkdownFile
-	JSONData  template.JS
 }
 
 type Builder interface {

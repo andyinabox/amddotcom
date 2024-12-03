@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>{{ .SiteData.Title }}</title>
+    <title>{{ .SiteData.Title }} | {{ .BuildData.TimeFormatted }}</title>
     <meta name="description" content="{{ .Pages.BioMD.Text }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -26,6 +26,7 @@
     </header>
     <main id="main">
       <section id="bio">{{ .Pages.BioMD.HTML }}</section>
+      <time class="published" datetime="{{ .BuildData.Time }}">{{ .BuildData.TimeFormatted }}</time>
     </main>
     <template id="bio-xs">{{ .Pages.BioXS.HTML }}</template>
     <template id="bio-sm">{{ .Pages.BioSM.HTML }}</template>

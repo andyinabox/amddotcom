@@ -2,7 +2,6 @@ package contextservice
 
 import (
 	"encoding/json"
-	"html/template"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -57,14 +56,6 @@ func (s *Service) GetContext() (ctx *internal.Context, err error) {
 		}
 
 	}
-
-	var b []byte
-	b, err = json.Marshal(ctx)
-	if err != nil {
-		return
-	}
-
-	ctx.JSONData = template.JS(string(b))
 
 	return
 }
