@@ -1,4 +1,4 @@
-I’m getting settled into my new home in the Sant Antoni neighborhood of Barcelona, so I’m spending a lot of my time just walking or biking around to get a feel of the city. Parlo una mica de català i castellà, però estic aprenent!
+I’m getting settled into my new home in the Sant Antoni neighborhood of Barcelona, so I’m spending a lot of my time just walking or biking around to get a feel of the city.
 
 In my working hours I help build the software for Lighter, a mission-driven company focused on making tools for eating a healthy, plant-based diet. I also do the occasional side gig — most recently doing 3D graphics for the screendance Ideas of an Acrobat.
 
