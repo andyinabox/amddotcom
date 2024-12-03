@@ -17,6 +17,7 @@ func main() {
 	flag.StringVar(&cnf.OutputPath, "o", "publish", "path to publish to")
 	flag.StringVar(&cnf.ContentPath, "content", "content", "location of site content")
 	flag.StringVar(&cnf.SrcPath, "src", "src", "location of site source code")
+	flag.StringVar(&cnf.AssetsPath, "assets", "assets", "location of assets dir")
 	flag.StringVar(&cnf.SiteDataFileName, "sitedatafile", "data.json", "name of file with site data")
 	flag.StringVar(&cnf.DateFormat, "dateformat", "January 2, 2006", "date format for human-readable build date")
 	flag.BoolVar(&cnf.OutputContextJSON, "contextjson", true, "output context.json")
@@ -33,6 +34,10 @@ func main() {
 		panic(err)
 	}
 	cnf.SrcPath, err = filepath.Abs(cnf.SrcPath)
+	if err != nil {
+		panic(err)
+	}
+	cnf.AssetsPath, err = filepath.Abs(cnf.AssetsPath)
 	if err != nil {
 		panic(err)
 	}

@@ -3,12 +3,20 @@
   <head>
     <meta charset="UTF-8" />
     <title>{{ .SiteData.Title }}</title>
-    <meta name="description" content="" />
+    <meta name="description" content="{{ .Pages.BioMD.Text }}" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <link rel="stylesheet" href="/styles.css" />
-
+    <style>
+      :root {
+        --amd-font-size-bio-xs: {{ .SiteData.BioFontSizeXs }};
+        --amd-font-size-bio-sm: {{ .SiteData.BioFontSizeSm }};
+        --amd-font-size-bio-md: {{ .SiteData.BioFontSizeMd }};
+        --amd-font-size-bio-lg: {{ .SiteData.BioFontSizeLg }};
+        --amd-font-size-bio-xl: {{ .SiteData.BioFontSizeXl }};
+      }
+    </style>
   </head>
   <body>
     <header id="header-main">

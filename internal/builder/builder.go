@@ -10,6 +10,7 @@ type Config struct {
 	SrcPath           string
 	OutputPath        string
 	ContentPath       string
+	AssetsPath        string
 	SiteDataFileName  string
 	DateFormat        string
 	OutputContextJSON bool
