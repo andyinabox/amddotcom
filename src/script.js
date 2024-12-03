@@ -12,9 +12,13 @@
     (name) => document.getElementById(`tmpl-${name}`).innerHTML
   )
 
-  let current = 2 // we start with the middle ('md') bio
+  // default value for current
+  let current = 2
 
-  function setBio(n) {
+  // set to whatever current slider value is
+  setBio(Math.floor(sliderEl.value - 1), true)
+
+  function setBio(n, skipUpdateSlider) {
     if (current == n) return // ignore if already set
 
     // log error if n is out of bounds
@@ -34,7 +38,7 @@
     bioContainerEl.classList.add(bioNames[current])
 
     // set value of slider
-    sliderEl.value = n + 1
+    if (!skipUpdateSlider) sliderEl.value = n + 1
   }
 
   // set listeners
