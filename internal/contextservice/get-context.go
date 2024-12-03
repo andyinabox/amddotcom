@@ -22,7 +22,7 @@ func (s *Service) GetContext() (ctx *internal.Context, err error) {
 
 	ctx = &internal.Context{
 		BuildData: internal.BuildData{
-			Time:          now,
+			Time:          now.Format(time.RFC3339),
 			TimeFormatted: now.Format(s.conf.DateFormat),
 		},
 		SiteData: make(map[string]string),

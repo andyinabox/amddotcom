@@ -2,11 +2,10 @@ package internal
 
 import (
 	"html/template"
-	"time"
 )
 
 type BuildData struct {
-	Time          time.Time
+	Time          string
 	TimeFormatted string
 }
 
