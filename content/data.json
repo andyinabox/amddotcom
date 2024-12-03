@@ -1,8 +1,8 @@
 {
   "Title": "Andy Dayton",
-  "BioFontSizeXs": "1rem",
-  "BioFontSizeSm": "1.5rem",
+  "BioFontSizeXs": "5rem",
+  "BioFontSizeSm": "2.5rem",
   "BioFontSizeMd": "2rem",
-  "BioFontSizeLg": "2.5rem",
-  "BioFontSizeXl": "5rem"
+  "BioFontSizeLg": "1.5rem",
+  "BioFontSizeXl": "1rem"
 }

@@ -86,11 +86,11 @@
   --amd-color-5: rgb(250, 105, 0);
 
   --amd-font-size-base: calc(75% + 2vw);
-  --amd-font-size-bio-xs: 1rem;
-  --amd-font-size-bio-sm: 1.5rem;
+  --amd-font-size-bio-xs: 5rem;
+  --amd-font-size-bio-sm: 2.5rem;
   --amd-font-size-bio-md: 2rem;
-  --amd-font-size-bio-lg: 2.5rem;
-  --amd-font-size-bio-xl: 5arem;
+  --amd-font-size-bio-lg: 1.5rem;
+  --amd-font-size-bio-xl: 1rem;
 
   --amd-font-family-primary: 'EB Garamond', 'Georgia', serif;
   --amd-font-family-secondary: 'Panamera', 'Helvetica', sans-serif;
@@ -106,8 +106,65 @@ html {
   font-size: var(--amd-font-size-base);
 }
 body {
+  height: 100vh;
   margin: 0;
   padding: 0;
   font-family: var(--amd-font-family-primary);
   color: var(--amd-color-black);
+  display: flex;
+  flex-direction: column;
+}
+
+header.header-main {
+  height: var(--amd-header-height);
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+input.slider {
+  flex-grow: 1;
+}
+
+label.btn {
+  font-family: var(--amd-font-family-secondary);
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+main {
+  flex-grow: 1;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.publish-date {
+  text-align: center;
+  font-size: 0.6rem;
+  padding: 0.75em;
+  font-family: var(--amd-font-family-secondary);
+  opacity: 0.3;
+}
+
+.bio-container.bio-xs {
+  font-size: var(--amd-font-size-bio-xs);
+}
+
+.bio-container.bio-sm {
+  font-size: var(--amd-font-size-bio-sm);
+}
+
+.bio-container.bio-md {
+  font-size: var(--amd-font-size-bio-md);
+}
+
+.bio-container.bio-lg {
+  font-size: var(--amd-font-size-bio-lg);
+}
+
+.bio-container.bio-xl {
+  font-size: var(--amd-font-size-bio-xl);
 }

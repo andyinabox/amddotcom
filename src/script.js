@@ -16,13 +16,23 @@
   function setBio(n) {
     if (current == n) return // ignore if already set
 
+    // log error if n is out of bounds
     if (n < 0 || n > 4) {
       console.error(`out of bounds: ${n}`)
       return
     }
 
+    // set current index
     current = n
+
+    // remove current bio name classes
+    bioNames.forEach((n) => bioContainerEl.classList.remove(n))
+
+    // set current bio and class
     bioContainerEl.innerHTML = bios[n]
+    bioContainerEl.classList.add(bioNames[current])
+
+    // set value of slider
     sliderEl.value = n + 1
   }
 
