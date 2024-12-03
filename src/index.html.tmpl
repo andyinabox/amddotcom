@@ -30,10 +30,7 @@
       <section class="bio-container bio-md" id="bio-container">{{ .Pages.BioMD.HTML }}</section>
     </main>
 
-    {{/* <time id="publish-date" class="publish-date" datetime="{{ .BuildData.Time }}">{{ .BuildData.TimeFormatted }}</time> */}}
-
-    <time id="publish-date" class="publish-date" datetime="2024-12-03T22:45:10+01:00">December 3, 2023</time>
-
+    <time id="publish-date" class="publish-date" datetime="{{ .BuildData.Time }}">{{ .BuildData.TimeFormatted }}</time>
 
     <!-- templates -->
     <template id="tmpl-bio-xs">{{ .Pages.BioXS.HTML }}</template>
