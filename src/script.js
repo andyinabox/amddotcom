@@ -1,4 +1,4 @@
-;(function main() {
+;(function () {
   // elements
   const btnLessEl = document.getElementById('btn-less')
   const btnMoreEl = document.getElementById('btn-more')
