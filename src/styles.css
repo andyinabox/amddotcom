@@ -87,10 +87,10 @@
 
   --amd-font-size-base: calc(75% + 2vw);
   --amd-font-size-bio-xs: 1rem;
-  --amd-font-size-bio-sm: 1rem;
-  --amd-font-size-bio-md: 1rem;
-  --amd-font-size-bio-lg: 1rem;
-  --amd-font-size-bio-xl: 1rem;
+  --amd-font-size-bio-sm: 1.5rem;
+  --amd-font-size-bio-md: 2rem;
+  --amd-font-size-bio-lg: 2.5rem;
+  --amd-font-size-bio-xl: 5arem;
 
   --amd-font-family-primary: 'EB Garamond', 'Georgia', serif;
   --amd-font-family-secondary: 'Panamera', 'Helvetica', sans-serif;

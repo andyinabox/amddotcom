@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <link rel="stylesheet" href="/normalize.css" />
     <link rel="stylesheet" href="/styles.css" />
     <style>
       :root {
@@ -19,20 +20,23 @@
     </style>
   </head>
   <body>
-    <header id="header-main">
+
+    <header class="header-main">
       <label id="btn-less" for="slider">Less</label>
       <input id="slider" type="range" value="3" min="1" max="5" step="0.01" />
       <label id="btn-more" for="slider">More</label>
     </header>
+
     <main id="main">
-      <section id="bio">{{ .Pages.BioMD.HTML }}</section>
-      <time class="published" datetime="{{ .BuildData.Time }}">{{ .BuildData.TimeFormatted }}</time>
+      <section class="bio-container" id="bio-container">{{ .Pages.BioMD.HTML }}</section>
+      <time class="publish-date" datetime="{{ .BuildData.Time }}">{{ .BuildData.TimeFormatted }}</time>
     </main>
-    <template id="bio-xs">{{ .Pages.BioXS.HTML }}</template>
-    <template id="bio-sm">{{ .Pages.BioSM.HTML }}</template>
-    <template id="bio-md">{{ .Pages.BioMD.HTML }}</template>
-    <template id="bio-lg">{{ .Pages.BioLG.HTML }}</template>
-    <template id="bio-xl">{{ .Pages.BioXL.HTML }}</template>
+
+    <template id="tmpl-bio-xs">{{ .Pages.BioXS.HTML }}</template>
+    <template id="tmpl-bio-sm">{{ .Pages.BioSM.HTML }}</template>
+    <template id="tmpl-bio-md">{{ .Pages.BioMD.HTML }}</template>
+    <template id="tmpl-bio-lg">{{ .Pages.BioLG.HTML }}</template>
+    <template id="tmpl-bio-xl">{{ .Pages.BioXL.HTML }}</template>
 
     <script src="/script.js"></script>
   </body>
