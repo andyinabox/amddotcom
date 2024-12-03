@@ -1,7 +1,7 @@
 
 .PHONY: build
 build: clean
-	go run cmd/build/main.go
+	go run .
 
 .PHONY: clean
 clean:
