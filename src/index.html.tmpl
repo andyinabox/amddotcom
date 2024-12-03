@@ -17,8 +17,14 @@
       <label id="btn-more" for="slider">More</label>
     </header>
     <main id="main">
-      <section class="bio">{{ .Pages.BioMD.HTML }}</section>
+      <section id="bio">{{ .Pages.BioMD.HTML }}</section>
     </main>
+    <template id="bio-xs">{{ .Pages.BioXS.HTML }}</template>
+    <template id="bio-sm">{{ .Pages.BioSM.HTML }}</template>
+    <template id="bio-md">{{ .Pages.BioMD.HTML }}</template>
+    <template id="bio-lg">{{ .Pages.BioLG.HTML }}</template>
+    <template id="bio-xl">{{ .Pages.BioXL.HTML }}</template>
+
     <script src="/script.js"></script>
   </body>
 </html>

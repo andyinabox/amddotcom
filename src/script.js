@@ -1,3 +1,6 @@
-const ctx = window.AMD
+const bioContainer = document.getElementById('bio')
+const bioXl = document.getElementById('bio-xl')
 
-console.log(ctx)
+console.log(bioXl.innerHTML)
+
+bioContainer.innerHTML = bioXl.innerHTML
