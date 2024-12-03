@@ -7,22 +7,30 @@ import (
 	"path/filepath"
 
 	"github.com/amddotcom/internal"
+	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday/v2"
 )
 
 func (s *Service) loadMdFile(entry fs.DirEntry) (data *internal.MarkdownFile, err error) {
-	var b []byte
+	var md []byte
 
-	b, err = os.ReadFile(filepath.Join(s.conf.ContentPath, entry.Name()))
+	// read raw markdown
+	md, err = os.ReadFile(filepath.Join(s.conf.ContentPath, entry.Name()))
 	if err != nil {
 		return
 	}
 
-	parsed := blackfriday.Run(b)
+	// convert md to html
+	parsed := string(blackfriday.Run(md))
+
+	// strip html
+	sanitizer := bluemonday.StrictPolicy()
+	clean := sanitizer.Sanitize(parsed)
 
 	data = &internal.MarkdownFile{
-		Raw:    b,
-		Parsed: template.HTML(string(parsed)),
+		Source: string(md),
+		Text:   clean,
+		HTML:   template.HTML(parsed),
 	}
 
 	return

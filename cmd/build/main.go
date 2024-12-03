@@ -1,50 +1,50 @@
 package main
 
 import (
+	"flag"
 	"io/fs"
 	"os"
 	"path/filepath"
 
-	"github.com/amddotcom/internal"
-	"github.com/amddotcom/internal/buildservice"
-	"github.com/amddotcom/internal/contextservice"
+	"github.com/amddotcom/internal/builder"
 )
 
 func main() {
-	var contextService internal.ContextService
-	var buildService internal.BuildService
+	var err error
 
-	cwd, err := os.Getwd()
+	cnf := &builder.Config{}
+
+	flag.StringVar(&cnf.OutputPath, "o", "publish", "path to publish to")
+	flag.StringVar(&cnf.ContentPath, "content", "content", "location of site content")
+	flag.StringVar(&cnf.SrcPath, "src", "src", "location of site source code")
+	flag.StringVar(&cnf.SiteDataFileName, "sitedatafile", "data.json", "name of file with site data")
+	flag.StringVar(&cnf.DateFormat, "dateformat", "January 2, 2006", "date format for human-readable build date")
+
+	flag.Parse()
+
+	// get absolute paths
+	cnf.OutputPath, err = filepath.Abs(cnf.OutputPath)
+	if err != nil {
+		panic(err)
+	}
+	cnf.ContentPath, err = filepath.Abs(cnf.ContentPath)
+	if err != nil {
+		panic(err)
+	}
+	cnf.SrcPath, err = filepath.Abs(cnf.SrcPath)
 	if err != nil {
 		panic(err)
 	}
 
-	outputPath := filepath.Join(cwd, "publish")
-	err = os.MkdirAll(outputPath, fs.ModePerm)
+	// make sure output path exists
+	err = os.MkdirAll(cnf.OutputPath, fs.ModePerm)
 	if err != nil {
 		panic(err)
 	}
 
-	contextService = contextservice.New(
-		&contextservice.Config{
-			ContentPath:      filepath.Join(cwd, "content"),
-			SiteDataFileName: "data.json",
-		},
-	)
+	builder := builder.New(cnf)
 
-	buildService = buildservice.New(
-		&buildservice.Config{
-			SrcPath:    filepath.Join(cwd, "src"),
-			OutputPath: outputPath,
-		},
-	)
-
-	ctx, err := contextService.GetContext()
-	if err != nil {
-		panic(err)
-	}
-
-	err = buildService.Build(ctx)
+	err = builder.Build()
 	if err != nil {
 		panic(err)
 	}

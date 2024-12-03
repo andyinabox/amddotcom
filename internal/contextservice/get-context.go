@@ -7,9 +7,9 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+	"time"
 
 	"github.com/amddotcom/internal"
-	"github.com/iancoleman/strcase"
 )
 
 func (s *Service) GetContext() (ctx *internal.Context, err error) {
@@ -19,8 +19,14 @@ func (s *Service) GetContext() (ctx *internal.Context, err error) {
 		return
 	}
 
+	now := time.Now()
+
 	ctx = &internal.Context{
-		SiteData: internal.SiteData{},
+		BuildData: internal.BuildData{
+			Time:          now,
+			TimeFormatted: now.Format(s.conf.DateFormat),
+		},
+		SiteData: make(map[string]string),
 		Pages:    make(map[string]internal.MarkdownFile),
 	}
 
@@ -66,6 +72,5 @@ func (s *Service) GetContext() (ctx *internal.Context, err error) {
 func getFileName(entry fs.DirEntry) string {
 	base := filepath.Base(entry.Name())
 	parts := strings.Split(base, ".")
-	name := parts[0]
-	return strcase.ToCamel(name)
+	return parts[0]
 }

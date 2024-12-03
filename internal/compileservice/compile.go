@@ -1,4 +1,4 @@
-package buildservice
+package compileservice
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 	"github.com/amddotcom/internal"
 )
 
-func (s *Service) Build(ctx *internal.Context) (err error) {
+func (s *Service) Compile(ctx *internal.Context) (err error) {
 
 	files, err := os.ReadDir(s.conf.SrcPath)
 	if err != nil {

@@ -1,4 +1,4 @@
-package buildservice
+package compileservice
 
 type Config struct {
 	SrcPath    string

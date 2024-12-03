@@ -1,26 +1,37 @@
 package internal
 
-import "html/template"
+import (
+	"html/template"
+	"time"
+)
 
-type SiteData struct {
-	Title string `json:"title"`
+type BuildData struct {
+	Time          time.Time
+	TimeFormatted string
 }
 
 type MarkdownFile struct {
-	Raw    []byte        `json:"-"`
-	Parsed template.HTML `json:"parsed"`
+	Source string
+	Text   string
+	HTML   template.HTML
+	Meta   map[string]string
 }
 
 type Context struct {
-	SiteData SiteData                `json:"siteData"`
-	Pages    map[string]MarkdownFile `json:"pages"`
-	JSONData template.JS             `json:"-"`
+	BuildData BuildData
+	SiteData  map[string]string
+	Pages     map[string]MarkdownFile
+	JSONData  template.JS
+}
+
+type Builder interface {
+	Build() error
 }
 
 type ContextService interface {
 	GetContext() (*Context, error)
 }
 
-type BuildService interface {
-	Build(*Context) error
+type CompileService interface {
+	Compile(*Context) error
 }
