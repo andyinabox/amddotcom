@@ -19,6 +19,7 @@ func main() {
 	flag.StringVar(&cnf.SrcPath, "src", "src", "location of site source code")
 	flag.StringVar(&cnf.SiteDataFileName, "sitedatafile", "data.json", "name of file with site data")
 	flag.StringVar(&cnf.DateFormat, "dateformat", "January 2, 2006", "date format for human-readable build date")
+	flag.BoolVar(&cnf.OutputContextJSON, "contextjson", true, "output context.json")
 
 	flag.Parse()
 

@@ -1,8 +1,9 @@
 package compileservice
 
 type Config struct {
-	SrcPath    string
-	OutputPath string
+	SrcPath           string
+	OutputPath        string
+	OutputContextJSON bool
 }
 
 type Service struct {

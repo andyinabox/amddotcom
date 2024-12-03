@@ -1,6 +1,7 @@
 package compileservice
 
 import (
+	"encoding/json"
 	"fmt"
 	"html/template"
 	"io/fs"
@@ -30,6 +31,18 @@ func (s *Service) Compile(ctx *internal.Context) (err error) {
 				fmt.Printf("error: %s\n", copyErr)
 			}
 		}
+	}
+
+	if s.conf.OutputContextJSON {
+		var data []byte
+		data, err = json.Marshal(ctx)
+		if err != nil {
+			return
+		}
+
+		contextFilePath := filepath.Join(s.conf.OutputPath, "context.json")
+		fmt.Printf("output file %s\n", contextFilePath)
+		err = os.WriteFile(contextFilePath, data, os.ModePerm)
 	}
 
 	return
