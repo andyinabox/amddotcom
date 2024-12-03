@@ -1,17 +1,14 @@
-@import url('/normalize.css');
-@import url('/fonts.css');
+@import url('normalize.css');
+@import url('fonts.css');
 
 :root {
-  --amd-color-black: hsl(0, 0%, 10%);
-  --amd-color-white: hsl(0, 0%, 100%);
-  --amd-color-gray: hsl(0, 0%, 60%);
-  --amd-color-white-transparent: hsla(0, 0%, 100%, 0.7);
+  --amd-color-text: hsl(0, 0%, 10%);
+  --amd-color-bg: hsl(0, 0%, 100%);
+  --amd-color-link: rgb(105, 210, 231);
+  --amd-color-visited: rgb(167, 219, 216);
 
-  --amd-color-1: rgb(105, 210, 231);
-  --amd-color-2: rgb(167, 219, 216);
-  --amd-color-3: rgb(224, 228, 204);
-  --amd-color-4: rgb(243, 134, 48);
-  --amd-color-5: rgb(250, 105, 0);
+  --amd-font-family-primary: 'EB Garamond', 'Georgia', serif;
+  --amd-font-family-secondary: 'Panamera', 'Helvetica', sans-serif;
 
   --amd-font-size-base: calc(75% + 2vw);
   --amd-font-size-bio-xs: 5rem;
@@ -19,15 +16,6 @@
   --amd-font-size-bio-md: 2rem;
   --amd-font-size-bio-lg: 1.5rem;
   --amd-font-size-bio-xl: 1rem;
-
-  --amd-font-family-primary: 'EB Garamond', 'Georgia', serif;
-  --amd-font-family-secondary: 'Panamera', 'Helvetica', sans-serif;
-
-  --amd-header-height: 2rem;
-  --amd-header-shadow-height: 0.5rem;
-
-  --amd-page-padding-side: 4vw;
-  --amd-content-max-width: 1280px;
 }
 
 html {
@@ -38,13 +26,22 @@ body {
   margin: 0;
   padding: 0;
   font-family: var(--amd-font-family-primary);
-  color: var(--amd-color-black);
+  color: var(--amd-color-text);
+  background-color: var(--amd-color-bg);
   display: flex;
   flex-direction: column;
 }
 
+a {
+  color: var(--amd-color-link);
+}
+
+a:hover,
+a:visited {
+  color: var(--amd-color-visited);
+}
+
 header.header-main {
-  height: var(--amd-header-height);
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -75,6 +72,8 @@ main {
   padding: 0.75em;
   font-family: var(--amd-font-family-secondary);
   opacity: 0.3;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .bio-container.bio-xs {

@@ -1,1 +1,1 @@
-I’m a creative person with many different passions, projects, and hobbies. I help build the software at [Lighter](https://www.lighterculture.com/), and spend a lot of my spare time on my bicycle. I live in Barcelona.
+I’m a media artist and programmer based in Barcelona. I help build the software at [Lighter](https://www.lighterculture.com/), and spend a lot of my spare time on my bicycle.

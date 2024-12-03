@@ -60,4 +60,13 @@
       setBio(4)
     }
   })
+
+  // not very scientific night mode logic
+  const hour = new Date().getHours()
+  if (hour < 8 || hour > 6) {
+    const linkEl = document.createElement('link')
+    linkEl.rel = 'stylesheet'
+    linkEl.href = '/night.css'
+    document.body.appendChild(linkEl)
+  }
 })()
