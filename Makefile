@@ -8,7 +8,7 @@ clean:
 	rm -rf publish
 
 .PHONY: watch
-watch:
+watch: build
 	reflex -G 'publish/*' make
 
 .PHONY: serve
