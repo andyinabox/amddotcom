@@ -16,5 +16,17 @@ serve:
 	npx servor publish/ --reload
 
 .PHONY: deploy
-deploy: build
-	aws --endpoint-url=https://s3.pub1.infomaniak.cloud s3 sync publish s3://andydaytondotcom
+deploy: publish/_redirects
+	rsync -rv publish/ pgs.sh:/andydaytondotcom/
+
+# .PHONY: deploy
+# deploy: build
+# 	aws --endpoint-url=https://s3.pub1.infomaniak.cloud s3 sync publish s3://andydaytondotcom
+
+
+# non-phony targets below
+
+publish: build
+
+publish/_redirects: publish
+	echo "/*  /index.html  200" > publish/_redirects

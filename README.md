@@ -5,9 +5,14 @@ YAPW = Yet Another Personal Website
 
 ## Deploy
 
-- https://docs.infomaniak.cloud/documentation/04.object-storage/030.static-website/
-- https://docs.infomaniak.cloud/documentation/04.object-storage/010.s3/
+### On Infomaniak/Openstack:
+ - https://docs.infomaniak.cloud/documentation/04.object-storage/030.static-website/
+ - https://docs.infomaniak.cloud/documentation/04.object-storage/010.s3/
+ - https://andydaytondotcom.b28bee57175648379ec940f55adfe842.s3.pub1.infomaniak.cloud/index.html
+ - https://b28bee57175648379ec940f55adfe842.s3.pub1.infomaniak.cloud/andydaytondotcom/index.html
 
+### On pico.sh
+ - https://andyinabox-andydaytondotcom.pgs.sh/
 
 ## Setup
 
