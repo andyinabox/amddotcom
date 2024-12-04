@@ -2,7 +2,7 @@
 
 YAPW = Yet Another Personal Website
 
-Hosted on https://www.statichost.eu/
+[![statichost.eu status](https://builder.statichost.eu/andydayton-com/status.svg)](https://builder.statichost.eu/andydayton-com/)
 
  - https://andydayton-com.statichost.eu/
  - https://andydayton.com/
