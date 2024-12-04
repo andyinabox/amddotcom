@@ -1,0 +1,20 @@
+# using an OpenStack RC file to authenticate with the OpenStack server for deploy
+# https://docs.infomaniak.cloud/documentation/00.getting-started/02.Connect_project/#__tabbed_4_2
+# https://docs.openstack.org/newton/user-guide/common/cli-set-environment-variables-using-openstack-rc.html
+
+export OS_AUTH_URL=https://api.pub1.infomaniak.cloud/identity/v3
+export OS_PROJECT_NAME=PCP-XXXXXXX
+export OS_USERNAME=PCU-XXXXXXX
+export OS_PROJECT_ID=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+export OS_PROJECT_DOMAIN_NAME=default
+export OS_USER_DOMAIN_NAME=default
+export OS_IDENTITY_API_VERSION=3
+export OS_INTERFACE=public
+export OS_REGION_NAME=dc3-a
+# To avoid being prompted for your password each time,
+# write your password below and uncomment the line
+#OS_PASSWORD='your password goes here'# 
+
+
+[ -z "$OS_PASSWORD" ] && read -e -p "Please enter your OpenStack Password for project $OS_PROJECT_NAME as user $OS_USERNAME: " OS_PASSWORD
+export OS_PASSWORD
