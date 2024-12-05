@@ -1,4 +1,4 @@
-package builder
+package app
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	cp "github.com/otiai10/copy"
 )
 
-func (b *Builder) Build(ctx context.Context) (err error) {
+func (b *App) Build(ctx context.Context) (err error) {
 	rc, err := b.ctx.GetRenderContext(ctx)
 	if err != nil {
 		return

@@ -7,12 +7,13 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/amddotcom/internal/builder"
+	"github.com/amddotcom/internal/app"
 	"github.com/urfave/cli/v3"
 )
 
 func main() {
-	cnf := &builder.Config{}
+	var port int64
+	cnf := &app.Config{}
 
 	defaultFlags := []cli.Flag{
 		&cli.StringFlag{
@@ -60,7 +61,14 @@ func main() {
 		},
 	}
 
-	preparePaths := func(cnf *builder.Config) (err error) {
+	serveFlags := append(defaultFlags, &cli.IntFlag{
+		Name:        "port",
+		Value:       8080,
+		Usage:       "port to run server on",
+		Destination: &port,
+	})
+
+	preparePaths := func(cnf *app.Config) (err error) {
 		// get absolute paths
 		cnf.OutputPath, err = filepath.Abs(cnf.OutputPath)
 		if err != nil {
@@ -93,19 +101,19 @@ func main() {
 				Flags: defaultFlags,
 				Action: func(ctx context.Context, cmd *cli.Command) (err error) {
 					preparePaths(cnf)
-					builder := builder.New(cnf)
-					return builder.Build(ctx)
+					app := app.New(cnf)
+					return app.Build(ctx)
 				},
 			},
 			// serve command
 			{
 				Name:  "serve",
 				Usage: "watch and serve the site",
-				Flags: defaultFlags,
+				Flags: serveFlags,
 				Action: func(ctx context.Context, cmd *cli.Command) (err error) {
 					preparePaths(cnf)
-					builder := builder.New(cnf)
-					return builder.Serve(ctx)
+					app := app.New(cnf)
+					return app.Serve(ctx, int(port))
 				},
 			},
 		},

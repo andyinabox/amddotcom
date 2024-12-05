@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func (s *Service) Serve(ctx context.Context) (err error) {
+func (s *Service) Serve(ctx context.Context, port int) (err error) {
 
 	// check that it exists
 	_, err = os.Stat(s.cnf.WebRoot)
@@ -19,7 +19,6 @@ func (s *Service) Serve(ctx context.Context) (err error) {
 
 	http.Handle("/", fileServer)
 
-	port := 8080
 	fmt.Printf("Server started at http://localhost:%d\n", port)
 
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), nil)

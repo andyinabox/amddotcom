@@ -1,4 +1,4 @@
-package builder
+package app
 
 import (
 	"github.com/amddotcom/internal"
@@ -17,15 +17,15 @@ type Config struct {
 	OutputContextJSON bool
 }
 
-type Builder struct {
+type App struct {
 	cmp internal.CompileService
 	ctx internal.ContextService
 	srv internal.WebService
 	cnf *Config
 }
 
-func New(cnf *Config) *Builder {
-	return &Builder{
+func New(cnf *Config) *App {
+	return &App{
 		cmp: compileservice.New(&compileservice.Config{
 			SrcPath:           cnf.SrcPath,
 			OutputPath:        cnf.OutputPath,

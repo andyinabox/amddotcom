@@ -5,6 +5,8 @@ import (
 	"html/template"
 )
 
+// structs
+
 type BuildData struct {
 	Time          string
 	TimeFormatted string
@@ -22,9 +24,10 @@ type RenderContext struct {
 	Pages     map[string]MarkdownFile
 }
 
-type Builder interface {
+// interfaces
+type App interface {
 	Build(context.Context) error
-	Serve(context.Context) error
+	Serve(ctx context.Context, port int) error
 }
 
 type ContextService interface {
@@ -36,7 +39,7 @@ type CompileService interface {
 }
 
 type WebService interface {
-	Serve(context.Context) error
+	Serve(ctx context.Context, port int) error
 }
 
 type WatchService interface {
