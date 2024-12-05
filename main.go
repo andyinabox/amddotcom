@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"errors"
 	"io/fs"
 	"log"
 	"os"
@@ -93,13 +92,9 @@ func main() {
 				Usage: "build the site",
 				Flags: defaultFlags,
 				Action: func(ctx context.Context, cmd *cli.Command) (err error) {
-
 					preparePaths(cnf)
-
 					builder := builder.New(cnf)
-
-					err = builder.Build(ctx)
-					return
+					return builder.Build(ctx)
 				},
 			},
 			// serve command
@@ -108,7 +103,9 @@ func main() {
 				Usage: "watch and serve the site",
 				Flags: defaultFlags,
 				Action: func(ctx context.Context, cmd *cli.Command) (err error) {
-					return errors.New("not implemented")
+					preparePaths(cnf)
+					builder := builder.New(cnf)
+					return builder.Serve(ctx)
 				},
 			},
 		},

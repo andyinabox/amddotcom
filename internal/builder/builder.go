@@ -4,6 +4,7 @@ import (
 	"github.com/amddotcom/internal"
 	"github.com/amddotcom/internal/compileservice"
 	"github.com/amddotcom/internal/contextservice"
+	"github.com/amddotcom/internal/webservice"
 )
 
 type Config struct {
@@ -19,6 +20,7 @@ type Config struct {
 type Builder struct {
 	cmp internal.CompileService
 	ctx internal.ContextService
+	srv internal.WebService
 	cnf *Config
 }
 
@@ -33,6 +35,9 @@ func New(cnf *Config) *Builder {
 			ContentPath:      cnf.ContentPath,
 			SiteDataFileName: cnf.SiteDataFileName,
 			DateFormat:       cnf.DateFormat,
+		}),
+		srv: webservice.New(&webservice.Config{
+			WebRoot: cnf.OutputPath,
 		}),
 		cnf: cnf,
 	}

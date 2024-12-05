@@ -24,6 +24,7 @@ type RenderContext struct {
 
 type Builder interface {
 	Build(context.Context) error
+	Serve(context.Context) error
 }
 
 type ContextService interface {
@@ -32,4 +33,12 @@ type ContextService interface {
 
 type CompileService interface {
 	Compile(context.Context, RenderContext) error
+}
+
+type WebService interface {
+	Serve(context.Context) error
+}
+
+type WatchService interface {
+	Watch(context.Context) error
 }
