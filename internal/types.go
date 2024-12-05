@@ -43,5 +43,5 @@ type WebService interface {
 }
 
 type WatchService interface {
-	Watch(context.Context) error
+	Watch(str context.Context, paths []string) (<-chan string, <-chan error)
 }

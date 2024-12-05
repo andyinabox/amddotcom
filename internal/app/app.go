@@ -4,6 +4,7 @@ import (
 	"github.com/amddotcom/internal"
 	"github.com/amddotcom/internal/compileservice"
 	"github.com/amddotcom/internal/contextservice"
+	"github.com/amddotcom/internal/watchservice"
 	"github.com/amddotcom/internal/webservice"
 )
 
@@ -21,6 +22,7 @@ type App struct {
 	cmp internal.CompileService
 	ctx internal.ContextService
 	srv internal.WebService
+	wch internal.WatchService
 	cnf *Config
 }
 
@@ -39,6 +41,7 @@ func New(cnf *Config) *App {
 		srv: webservice.New(&webservice.Config{
 			WebRoot: cnf.OutputPath,
 		}),
+		wch: watchservice.New(&watchservice.Config{}),
 		cnf: cnf,
 	}
 }
