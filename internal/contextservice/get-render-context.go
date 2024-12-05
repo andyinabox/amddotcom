@@ -1,6 +1,7 @@
 package contextservice
 
 import (
+	"context"
 	"encoding/json"
 	"io/fs"
 	"os"
@@ -11,7 +12,7 @@ import (
 	"github.com/amddotcom/internal"
 )
 
-func (s *Service) GetContext() (ctx *internal.Context, err error) {
+func (s *Service) GetRenderContext(ctx context.Context) (rc *internal.RenderContext, err error) {
 
 	files, err := os.ReadDir(s.conf.ContentPath)
 	if err != nil {
@@ -20,7 +21,7 @@ func (s *Service) GetContext() (ctx *internal.Context, err error) {
 
 	now := time.Now()
 
-	ctx = &internal.Context{
+	rc = &internal.RenderContext{
 		BuildData: internal.BuildData{
 			Time:          now.Format(time.RFC3339),
 			TimeFormatted: now.Format(s.conf.DateFormat),
@@ -38,7 +39,7 @@ func (s *Service) GetContext() (ctx *internal.Context, err error) {
 			if err != nil {
 				return
 			}
-			err = json.Unmarshal(b, &ctx.SiteData)
+			err = json.Unmarshal(b, &rc.SiteData)
 
 			if err != nil {
 				return
@@ -52,7 +53,7 @@ func (s *Service) GetContext() (ctx *internal.Context, err error) {
 			if err != nil {
 				return
 			}
-			ctx.Pages[getFileName(file)] = *m
+			rc.Pages[getFileName(file)] = *m
 		}
 
 	}

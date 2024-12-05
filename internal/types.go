@@ -1,6 +1,7 @@
 package internal
 
 import (
+	"context"
 	"html/template"
 )
 
@@ -15,20 +16,20 @@ type MarkdownFile struct {
 	HTML   template.HTML
 }
 
-type Context struct {
+type RenderContext struct {
 	BuildData BuildData
 	SiteData  map[string]string
 	Pages     map[string]MarkdownFile
 }
 
 type Builder interface {
-	Build() error
+	Build(context.Context) error
 }
 
 type ContextService interface {
-	GetContext() (*Context, error)
+	GetRenderContext(context.Context) (*RenderContext, error)
 }
 
 type CompileService interface {
-	Compile(*Context) error
+	Compile(context.Context, RenderContext) error
 }

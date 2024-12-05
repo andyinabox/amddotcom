@@ -1,6 +1,7 @@
 package compileservice
 
 import (
+	"context"
 	"encoding/json"
 	"fmt"
 	"html/template"
@@ -12,7 +13,7 @@ import (
 	"github.com/amddotcom/internal"
 )
 
-func (s *Service) Compile(ctx *internal.Context) (err error) {
+func (s *Service) Compile(ctx context.Context, rc internal.RenderContext) (err error) {
 
 	files, err := os.ReadDir(s.conf.SrcPath)
 	if err != nil {
@@ -21,7 +22,7 @@ func (s *Service) Compile(ctx *internal.Context) (err error) {
 
 	for _, file := range files {
 		if file.Name() == "index.html.tmpl" {
-			copyErr := s.parseHtmlTemplate(file, ctx)
+			copyErr := s.parseHtmlTemplate(file, rc)
 			if copyErr != nil {
 				fmt.Printf("error: %s\n", copyErr)
 			}
@@ -35,7 +36,7 @@ func (s *Service) Compile(ctx *internal.Context) (err error) {
 
 	if s.conf.OutputContextJSON {
 		var data []byte
-		data, err = json.Marshal(ctx)
+		data, err = json.Marshal(rc)
 		if err != nil {
 			return
 		}
@@ -62,7 +63,7 @@ func (s *Service) copyFile(f fs.DirEntry) (err error) {
 	return
 }
 
-func (s *Service) parseHtmlTemplate(f fs.DirEntry, ctx *internal.Context) (err error) {
+func (s *Service) parseHtmlTemplate(f fs.DirEntry, rc internal.RenderContext) (err error) {
 	var b []byte
 	b, err = os.ReadFile(filepath.Join(s.conf.SrcPath, f.Name()))
 	if err != nil {
@@ -83,7 +84,7 @@ func (s *Service) parseHtmlTemplate(f fs.DirEntry, ctx *internal.Context) (err e
 	}
 	defer out.Close()
 
-	err = tmpl.ExecuteTemplate(out, f.Name(), ctx)
+	err = tmpl.ExecuteTemplate(out, f.Name(), rc)
 
 	return
 }

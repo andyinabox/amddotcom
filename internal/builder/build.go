@@ -1,19 +1,20 @@
 package builder
 
 import (
+	"context"
 	"fmt"
 	"path/filepath"
 
 	cp "github.com/otiai10/copy"
 )
 
-func (b *Builder) Build() (err error) {
-	ctx, err := b.ctx.GetContext()
+func (b *Builder) Build(ctx context.Context) (err error) {
+	rc, err := b.ctx.GetRenderContext(ctx)
 	if err != nil {
 		return
 	}
 
-	err = b.cmp.Compile(ctx)
+	err = b.cmp.Compile(ctx, *rc)
 	if err != nil {
 		return
 	}
