@@ -41,6 +41,12 @@ a:visited {
   color: var(--amd-color-visited);
 }
 
+code {
+  font-family: courier, monospace;
+  font-size: 0.8rem;
+  color: var(--amd-color-visited);
+}
+
 header.header-main {
   display: flex;
   flex-direction: row;

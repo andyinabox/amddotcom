@@ -1,5 +1,5 @@
-I’m getting settled into my new home in the Sant Antoni neighborhood of Barcelona, so I’m spending a lot of my time just walking or biking around to get a feel of the city.
+I've lived in Barcelona for about 2.5 years now, although it's taking me longer than I'd hoped to pick up a new language. I work at [PAU](https://www.wearepau.com/) and [Makers Zone BCN](https://mzbcn.es/) depending on what I'm working on. 
 
-In my working hours I help build the software for Lighter, a mission-driven company focused on making tools for eating a healthy, plant-based diet. I also do the occasional side gig — most recently doing 3D graphics for the screendance Ideas of an Acrobat.
+I recently read [_The Making of the Atomic Bomb_](https://search.worldcat.org/title/17454791) which I found quite fascinating, inspiring, and disturbing. It tells a good story, and touches on both the excitement of discovery and the horrors of war. I'd gladly talk your ear off about it.
 
-One of my more recent passions is 3D animation, and you can see a few clips scattered throughout my instagram and on vimeo. I also have an ongoing habit of making video haikus, and I’m working on building a bicycle frame (maybe a few if it goes well 🙂)
+If you want to get in touch you can find me on [Mastodon](https://mastodon.social/@andyinabox) and [Instagram](https://www.instagram.com/andyinabox/), or just email me at `andy[at]andydayton.com`.
