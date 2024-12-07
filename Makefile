@@ -1,7 +1,7 @@
 
 .PHONY: build
 build: clean
-	go run . build -v
+	go run . build
 
 .PHONY: clean
 clean:
@@ -10,11 +10,3 @@ clean:
 .PHONY: serve
 serve: 
 	go run . serve -v
-
-# .PHONY: watch
-# watch: build
-# 	reflex -G 'publish/*' make
-
-# .PHONY: serve
-# serve:
-# 	npx servor publish/ --reload
