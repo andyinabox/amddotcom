@@ -3,6 +3,7 @@ package app
 import (
 	"context"
 	"fmt"
+	"path/filepath"
 )
 
 func (b *App) Serve(ctx context.Context, port int) (err error) {
@@ -29,12 +30,13 @@ func (b *App) Serve(ctx context.Context, port int) (err error) {
 
 	// loop over changes in range loop
 	for change := range changesChan {
-		fmt.Printf("changed: %s", change)
+		fmt.Printf("changed: %s\n", change)
 		err = b.Build(ctx)
 		if err != nil {
 			fmt.Printf("build error: %s", err)
 		}
-		refreshChan <- struct{}{}
+		// don't send the whole path, just the file name
+		refreshChan <- filepath.Base(change)
 	}
 
 	return

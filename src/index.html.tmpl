@@ -53,3 +53,16 @@
 
   </body>
 </html>
+
+
+<script>
+console.log("setting up livereload")
+const eventSource = new EventSource('http://localhost:8080/_livereload');
+eventSource.onmessage = function(event) {
+  console.log("livereload", event.data)
+  window.location.reload()
+};
+eventSource.onerror = (err) => {
+  console.error("livereload error", err);
+};
+</script>

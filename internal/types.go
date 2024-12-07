@@ -39,7 +39,7 @@ type CompileService interface {
 }
 
 type WebService interface {
-	Serve(ctx context.Context, port int) (refresh chan<- struct{}, err error)
+	Serve(ctx context.Context, port int) (refresh chan<- string, err error)
 }
 
 type WatchService interface {

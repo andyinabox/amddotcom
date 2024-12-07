@@ -7,11 +7,11 @@ import (
 	"os"
 )
 
-func (s *Service) Serve(ctx context.Context, port int) (chan<- struct{}, error) {
+func (s *Service) Serve(ctx context.Context, port int) (chan<- string, error) {
 
 	ctx, cancel := context.WithCancelCause(ctx)
 
-	refresh := make(chan struct{})
+	refresh := make(chan string)
 
 	// check that it exists
 	_, err := os.Stat(s.cnf.WebRoot)
@@ -22,6 +22,26 @@ func (s *Service) Serve(ctx context.Context, port int) (chan<- struct{}, error) 
 	fileServer := http.FileServer(http.Dir(s.cnf.WebRoot))
 
 	http.Handle("/", fileServer)
+
+	// events handler
+	http.HandleFunc("/_livereload", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("get livereload handshake from client")
+
+		// Set CORS headers to allow all origins. You may want to restrict this to specific origins in a production environment.
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Expose-Headers", "Content-Type")
+		w.Header().Set("Content-Type", "text/event-stream")
+		w.Header().Set("Cache-Control", "no-cache")
+		w.Header().Set("Connection", "keep-alive")
+
+		// Simulate sending events (you can replace this with real data)
+		for refreshMsg := range refresh {
+			fmt.Printf("send refresh message: %s\n", refreshMsg)
+			fmt.Fprintf(w, "data: %s\n\n", refreshMsg)
+			w.(http.Flusher).Flush()
+		}
+
+	})
 
 	fmt.Printf("Server started at http://localhost:%d\n", port)
 
