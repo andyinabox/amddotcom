@@ -11,6 +11,10 @@ import (
 	"github.com/urfave/cli/v3"
 )
 
+func init() {
+	log.SetReportTimestamp(false)
+}
+
 func main() {
 	var port int64
 	var debug bool
