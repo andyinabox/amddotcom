@@ -9,6 +9,7 @@ require (
 
 require (
 	github.com/aymerick/douceur v0.2.0 // indirect
+	github.com/fsnotify/fsnotify v1.8.0 // indirect
 	github.com/gorilla/css v1.0.1 // indirect
 	github.com/otiai10/copy v1.14.0 // indirect
 	github.com/urfave/cli/v3 v3.0.0-beta1 // indirect

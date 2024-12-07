@@ -1,16 +1,20 @@
 
 .PHONY: build
 build: clean
-	go run .
+	go run . build
 
 .PHONY: clean
 clean:
 	rm -rf publish
 
-.PHONY: watch
-watch: build
-	reflex -G 'publish/*' make
-
 .PHONY: serve
-serve:
-	npx servor publish/ --reload
+serve: 
+	go run . serve
+
+# .PHONY: watch
+# watch: build
+# 	reflex -G 'publish/*' make
+
+# .PHONY: serve
+# serve:
+# 	npx servor publish/ --reload
