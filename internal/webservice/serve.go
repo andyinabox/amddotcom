@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+
+	"github.com/charmbracelet/log"
 )
 
 func (s *Service) Serve(ctx context.Context, port int) (chan<- string, error) {
@@ -25,7 +27,7 @@ func (s *Service) Serve(ctx context.Context, port int) (chan<- string, error) {
 
 	// events handler
 	http.HandleFunc("/_livereload", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("get livereload handshake from client")
+		log.Debug("got livereload handshake from client")
 
 		// Set CORS headers to allow all origins. You may want to restrict this to specific origins in a production environment.
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -36,14 +38,14 @@ func (s *Service) Serve(ctx context.Context, port int) (chan<- string, error) {
 
 		// Simulate sending events (you can replace this with real data)
 		for refreshMsg := range refresh {
-			fmt.Printf("send refresh message: %s\n", refreshMsg)
+			log.Debug("send refresh event", "message", refreshMsg)
 			fmt.Fprintf(w, "data: %s\n\n", refreshMsg)
 			w.(http.Flusher).Flush()
 		}
 
 	})
 
-	fmt.Printf("Server started at http://localhost:%d\n", port)
+	log.Info(fmt.Sprintf("server started at http://localhost:%d", port))
 
 	cleanup := func() {
 		close(refresh)

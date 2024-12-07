@@ -3,16 +3,18 @@ package main
 import (
 	"context"
 	"io/fs"
-	"log"
 	"os"
 	"path/filepath"
 
 	"github.com/amddotcom/internal/app"
+	"github.com/charmbracelet/log"
 	"github.com/urfave/cli/v3"
 )
 
 func main() {
 	var port int64
+	var debug bool
+
 	cnf := &app.Config{}
 
 	defaultFlags := []cli.Flag{
@@ -59,6 +61,12 @@ func main() {
 			Usage:       "output context.json",
 			Destination: &cnf.OutputContextJSON,
 		},
+		&cli.BoolFlag{
+			Name:        "verbose",
+			Aliases:     []string{"v"},
+			Usage:       "verbose logging",
+			Destination: &debug,
+		},
 	}
 
 	serveFlags := append(defaultFlags, &cli.IntFlag{
@@ -100,6 +108,9 @@ func main() {
 				Usage: "build the site",
 				Flags: defaultFlags,
 				Action: func(ctx context.Context, cmd *cli.Command) (err error) {
+					if debug {
+						log.SetLevel(log.DebugLevel)
+					}
 					preparePaths(cnf)
 					app := app.New(cnf)
 					return app.Build(ctx)
@@ -111,6 +122,9 @@ func main() {
 				Usage: "watch and serve the site",
 				Flags: serveFlags,
 				Action: func(ctx context.Context, cmd *cli.Command) (err error) {
+					if debug {
+						log.SetLevel(log.DebugLevel)
+					}
 					preparePaths(cnf)
 					app := app.New(cnf)
 					return app.Serve(ctx, int(port))

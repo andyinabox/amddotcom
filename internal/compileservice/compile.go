@@ -3,7 +3,6 @@ package compileservice
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"html/template"
 	"io/fs"
 	"os"
@@ -11,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/amddotcom/internal"
+	"github.com/charmbracelet/log"
 )
 
 func (s *Service) Compile(ctx context.Context, rc internal.RenderContext) (err error) {
@@ -24,12 +24,12 @@ func (s *Service) Compile(ctx context.Context, rc internal.RenderContext) (err e
 		if file.Name() == "index.html.tmpl" {
 			copyErr := s.parseHtmlTemplate(file, rc)
 			if copyErr != nil {
-				fmt.Printf("error: %s\n", copyErr)
+				log.Error(copyErr)
 			}
 		} else {
 			copyErr := s.copyFile(file)
 			if copyErr != nil {
-				fmt.Printf("error: %s\n", copyErr)
+				log.Error(copyErr)
 			}
 		}
 	}
@@ -42,7 +42,7 @@ func (s *Service) Compile(ctx context.Context, rc internal.RenderContext) (err e
 		}
 
 		contextFilePath := filepath.Join(s.conf.OutputPath, "context.json")
-		fmt.Printf("output file %s\n", contextFilePath)
+		log.Debug("output context file", "file", contextFilePath)
 		err = os.WriteFile(contextFilePath, data, os.ModePerm)
 	}
 
@@ -58,7 +58,7 @@ func (s *Service) copyFile(f fs.DirEntry) (err error) {
 	}
 
 	outFile := filepath.Join(s.conf.OutputPath, f.Name())
-	fmt.Printf("copy file %s\n", outFile)
+	log.Debug("copy file", "file", outFile)
 	err = os.WriteFile(outFile, b, os.ModePerm)
 	return
 }
@@ -76,7 +76,7 @@ func (s *Service) parseHtmlTemplate(f fs.DirEntry, rc internal.RenderContext) (e
 	}
 
 	outFile := filepath.Join(s.conf.OutputPath, strings.Replace(f.Name(), ".tmpl", "", 1))
-	fmt.Printf("parse html file %s\n", outFile)
+	log.Debug("parse html file", "file", outFile)
 
 	out, err := os.Create(outFile)
 	if err != nil {

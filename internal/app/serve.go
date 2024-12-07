@@ -2,8 +2,9 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"path/filepath"
+
+	"github.com/charmbracelet/log"
 )
 
 func (b *App) Serve(ctx context.Context, port int) (err error) {
@@ -30,12 +31,13 @@ func (b *App) Serve(ctx context.Context, port int) (err error) {
 
 	// loop over changes in range loop
 	for change := range changesChan {
-		fmt.Printf("changed: %s\n", change)
+		log.Debug("changed", "file", change)
 		err = b.Build(ctx)
 		if err != nil {
-			fmt.Printf("build error: %s", err)
+			log.Error("error building after changes", "error", err)
 		}
 		// don't send the whole path, just the file name
+		log.Info("refresh browser")
 		refreshChan <- filepath.Base(change)
 	}
 

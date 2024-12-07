@@ -1,7 +1,7 @@
 
 .PHONY: build
 build: clean
-	go run . build
+	go run . build -v
 
 .PHONY: clean
 clean:
@@ -9,7 +9,7 @@ clean:
 
 .PHONY: serve
 serve: 
-	go run . serve
+	go run . serve -v
 
 # .PHONY: watch
 # watch: build
