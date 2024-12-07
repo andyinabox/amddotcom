@@ -57,13 +57,13 @@
 
 <script>
   ;(function() {
-    const eventSource = new EventSource('http://localhost:8080/_livereload')
-    eventSource.onopen = (event) => { console.log("liverload connection open") }
-    eventSource.onerror = (err) => { console.error("livereload error", err) }
-    eventSource.onmessage = function(event) {
-      console.log("livereload", event.data)
-      eventSource.close()
+    const es = new EventSource('http://localhost:8080/_livereload')
+    es.addEventListener("open", evt => console.log("livereload connection open"))
+    es.addEventListener("error", err => console.error("livereload error", err))
+    es.addEventListener("message", evt => {
+      console.log("file changed:", event.data)
+      es.close()
       window.location.reload()
-    };
+    })
   })()
 </script>

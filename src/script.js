@@ -72,7 +72,7 @@
 
   // not very scientific night mode logic
   const hour = new Date().getHours()
-  if (hour < 7 || hour >= 7) enableNightMode()
+  if (hour < 7 || hour >= 19) enableNightMode()
 })()
 
 function enableNightMode() {

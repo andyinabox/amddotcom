@@ -27,6 +27,8 @@ func (s *Service) Serve(ctx context.Context, port int) (chan<- string, error) {
 
 	// events handler
 	http.HandleFunc("/_livereload", func(w http.ResponseWriter, r *http.Request) {
+		ctx := r.Context()
+
 		log.Debug("got livereload handshake from client")
 
 		// Set CORS headers to allow all origins. You may want to restrict this to specific origins in a production environment.
@@ -36,13 +38,17 @@ func (s *Service) Serve(ctx context.Context, port int) (chan<- string, error) {
 		w.Header().Set("Cache-Control", "no-cache")
 		w.Header().Set("Connection", "keep-alive")
 
-		// Simulate sending events (you can replace this with real data)
-		for refreshMsg := range refresh {
-			log.Debug("send refresh event", "message", refreshMsg)
-			fmt.Fprintf(w, "data: %s\n\n", refreshMsg)
-			w.(http.Flusher).Flush()
+		for {
+			select {
+			case refreshMsg := <-refresh:
+				log.Debug("send refresh event", "message", refreshMsg)
+				fmt.Fprintf(w, "data: %s\n\n", refreshMsg)
+				w.(http.Flusher).Flush()
+			case <-ctx.Done():
+				log.Debug("context cancelled, closing livereload connection")
+				return
+			}
 		}
-
 	})
 
 	log.Info(fmt.Sprintf("server started at http://localhost:%d", port))
