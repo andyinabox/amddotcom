@@ -1,58 +1,143 @@
 package main
 
 import (
-	"flag"
+	"context"
 	"io/fs"
 	"os"
 	"path/filepath"
 
-	"github.com/amddotcom/internal/builder"
+	"github.com/amddotcom/internal/app"
+	"github.com/charmbracelet/log"
+	"github.com/urfave/cli/v3"
 )
 
+func init() {
+	log.SetReportTimestamp(false)
+}
+
 func main() {
-	var err error
+	var port int64
+	var debug bool
 
-	cnf := &builder.Config{}
+	cnf := &app.Config{}
 
-	flag.StringVar(&cnf.OutputPath, "o", "publish", "path to publish to")
-	flag.StringVar(&cnf.ContentPath, "content", "content", "location of site content")
-	flag.StringVar(&cnf.SrcPath, "src", "src", "location of site source code")
-	flag.StringVar(&cnf.AssetsPath, "assets", "assets", "location of assets dir")
-	flag.StringVar(&cnf.SiteDataFileName, "sitedatafile", "data.json", "name of file with site data")
-	flag.StringVar(&cnf.DateFormat, "dateformat", "January 2, 2006", "date format for human-readable build date")
-	flag.BoolVar(&cnf.OutputContextJSON, "contextjson", true, "output context.json")
+	defaultFlags := []cli.Flag{
+		&cli.StringFlag{
+			Name:        "o",
+			Value:       "publish",
+			Usage:       "path to publish to",
+			Destination: &cnf.OutputPath,
+		},
+		&cli.StringFlag{
+			Name:        "content",
+			Value:       "content",
+			Usage:       "location of site content",
+			Destination: &cnf.ContentPath,
+		},
+		&cli.StringFlag{
+			Name:        "src",
+			Value:       "src",
+			Usage:       "location of site source code",
+			Destination: &cnf.SrcPath,
+		},
+		&cli.StringFlag{
+			Name:        "assets",
+			Value:       "assets",
+			Usage:       "location of assets dir",
+			Destination: &cnf.AssetsPath,
+		},
 
-	flag.Parse()
-
-	// get absolute paths
-	cnf.OutputPath, err = filepath.Abs(cnf.OutputPath)
-	if err != nil {
-		panic(err)
+		&cli.StringFlag{
+			Name:        "sitedatafile",
+			Value:       "data.json",
+			Usage:       "name of file with site data",
+			Destination: &cnf.SiteDataFileName,
+		},
+		&cli.StringFlag{
+			Name:        "dateformat",
+			Value:       "January 2, 2006",
+			Usage:       "date format for human-readable build date",
+			Destination: &cnf.DateFormat,
+		},
+		&cli.BoolFlag{
+			Name:        "contextjson",
+			Value:       false,
+			Usage:       "output context.json",
+			Destination: &cnf.OutputContextJSON,
+		},
+		&cli.BoolFlag{
+			Name:        "verbose",
+			Aliases:     []string{"v"},
+			Usage:       "verbose logging",
+			Destination: &debug,
+		},
 	}
-	cnf.ContentPath, err = filepath.Abs(cnf.ContentPath)
-	if err != nil {
-		panic(err)
-	}
-	cnf.SrcPath, err = filepath.Abs(cnf.SrcPath)
-	if err != nil {
-		panic(err)
-	}
-	cnf.AssetsPath, err = filepath.Abs(cnf.AssetsPath)
-	if err != nil {
-		panic(err)
+
+	serveFlags := append(defaultFlags, &cli.IntFlag{
+		Name:        "port",
+		Value:       8080,
+		Usage:       "port to run server on",
+		Destination: &cnf.Port,
+	})
+
+	preparePaths := func(cnf *app.Config) (err error) {
+		// get absolute paths
+		cnf.OutputPath, err = filepath.Abs(cnf.OutputPath)
+		if err != nil {
+			return
+		}
+		cnf.ContentPath, err = filepath.Abs(cnf.ContentPath)
+		if err != nil {
+			return
+		}
+		cnf.SrcPath, err = filepath.Abs(cnf.SrcPath)
+		if err != nil {
+			return
+		}
+		cnf.AssetsPath, err = filepath.Abs(cnf.AssetsPath)
+		if err != nil {
+			return
+		}
+
+		// make sure output path exists
+		err = os.MkdirAll(cnf.OutputPath, fs.ModePerm)
+		return
 	}
 
-	// make sure output path exists
-	err = os.MkdirAll(cnf.OutputPath, fs.ModePerm)
-	if err != nil {
-		panic(err)
+	cmd := &cli.Command{
+		Commands: []*cli.Command{
+			// build command
+			{
+				Name:  "build",
+				Usage: "build the site",
+				Flags: defaultFlags,
+				Action: func(ctx context.Context, cmd *cli.Command) (err error) {
+					if debug {
+						log.SetLevel(log.DebugLevel)
+					}
+					preparePaths(cnf)
+					app := app.New(cnf)
+					return app.Build(ctx)
+				},
+			},
+			// serve command
+			{
+				Name:  "serve",
+				Usage: "watch and serve the site",
+				Flags: serveFlags,
+				Action: func(ctx context.Context, cmd *cli.Command) (err error) {
+					if debug {
+						log.SetLevel(log.DebugLevel)
+					}
+					preparePaths(cnf)
+					app := app.New(cnf)
+					return app.Serve(ctx, int(port))
+				},
+			},
+		},
 	}
 
-	builder := builder.New(cnf)
-
-	err = builder.Build()
-	if err != nil {
-		panic(err)
+	if err := cmd.Run(context.Background(), os.Args); err != nil {
+		log.Fatal(err)
 	}
-
 }
