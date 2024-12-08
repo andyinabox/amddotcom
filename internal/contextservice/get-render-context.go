@@ -3,6 +3,7 @@ package contextservice
 import (
 	"context"
 	"encoding/json"
+	"html/template"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -56,6 +57,11 @@ func (s *Service) GetRenderContext(ctx context.Context) (rc *internal.RenderCont
 			rc.Pages[getFileName(file)] = *m
 		}
 
+	}
+
+	snippet := ctx.Value(internal.LiveReloadSnippetKey)
+	if snippet != nil {
+		rc.LiveReloadSnippet = template.HTML(snippet.(string))
 	}
 
 	return

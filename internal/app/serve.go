@@ -4,10 +4,15 @@ import (
 	"context"
 	"path/filepath"
 
+	"github.com/amddotcom/internal"
 	"github.com/charmbracelet/log"
 )
 
 func (b *App) Serve(ctx context.Context, port int) (err error) {
+
+	snippet := b.srv.GetLiveReloadSnippet()
+	log.Debug("set livereload snippet", "snippet", snippet)
+	ctx = context.WithValue(ctx, internal.LiveReloadSnippetKey, snippet)
 
 	// make sure to build once
 	err = b.Build(ctx)
@@ -15,7 +20,7 @@ func (b *App) Serve(ctx context.Context, port int) (err error) {
 		return
 	}
 
-	refreshChan, err := b.srv.Serve(ctx, port)
+	refreshChan, err := b.srv.Serve(ctx)
 	if err != nil {
 		return
 	}
@@ -43,3 +48,18 @@ func (b *App) Serve(ctx context.Context, port int) (err error) {
 
 	return
 }
+
+// func (a *App) buildForReload(ctx context.Context, liveReloadSnippet string) (err error) {
+// 	log.Info("building...")
+
+// 	rc, err := a.ctx.GetRenderContext(ctx)
+// 	if err != nil {
+// 		return
+// 	}
+
+// 	rc.LiveReloadSnippet = template.HTML(liveReloadSnippet)
+
+// 	err = a.cmp.Compile(ctx, *rc)
+// 	return
+
+// }

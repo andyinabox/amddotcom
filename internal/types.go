@@ -7,6 +7,10 @@ import (
 
 // structs
 
+type ContextKey string
+
+const LiveReloadSnippetKey ContextKey = "LiveReloadSnippet"
+
 type BuildData struct {
 	Time          string
 	TimeFormatted string
@@ -19,9 +23,10 @@ type MarkdownFile struct {
 }
 
 type RenderContext struct {
-	BuildData BuildData
-	SiteData  map[string]string
-	Pages     map[string]MarkdownFile
+	BuildData         BuildData
+	SiteData          map[string]string
+	Pages             map[string]MarkdownFile
+	LiveReloadSnippet template.HTML
 }
 
 // interfaces
@@ -39,7 +44,8 @@ type CompileService interface {
 }
 
 type WebService interface {
-	Serve(ctx context.Context, port int) (refresh chan<- string, err error)
+	Serve(ctx context.Context) (refresh chan<- string, err error)
+	GetLiveReloadSnippet() string
 }
 
 type WatchService interface {

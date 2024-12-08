@@ -77,7 +77,7 @@ func main() {
 		Name:        "port",
 		Value:       8080,
 		Usage:       "port to run server on",
-		Destination: &port,
+		Destination: &cnf.Port,
 	})
 
 	preparePaths := func(cnf *app.Config) (err error) {

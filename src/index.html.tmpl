@@ -54,16 +54,4 @@
   </body>
 </html>
 
-
-<script>
-  ;(function() {
-    const es = new EventSource('http://localhost:8080/_livereload')
-    es.addEventListener("open", evt => console.log("livereload connection open"))
-    es.addEventListener("error", err => console.error("livereload error", err))
-    es.addEventListener("message", evt => {
-      console.log("file changed:", event.data)
-      es.close()
-      window.location.reload()
-    })
-  })()
-</script>
+{{ .LiveReloadSnippet }}

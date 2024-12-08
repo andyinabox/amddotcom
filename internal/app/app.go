@@ -16,6 +16,7 @@ type Config struct {
 	SiteDataFileName  string
 	DateFormat        string
 	OutputContextJSON bool
+	Port              int64
 }
 
 type App struct {
@@ -31,6 +32,7 @@ func New(cnf *Config) *App {
 		cmp: compileservice.New(&compileservice.Config{
 			SrcPath:           cnf.SrcPath,
 			OutputPath:        cnf.OutputPath,
+			AssetsPath:        cnf.AssetsPath,
 			OutputContextJSON: cnf.OutputContextJSON,
 		}),
 		ctx: contextservice.New(&contextservice.Config{
@@ -40,6 +42,7 @@ func New(cnf *Config) *App {
 		}),
 		srv: webservice.New(&webservice.Config{
 			WebRoot: cnf.OutputPath,
+			Port:    cnf.Port,
 		}),
 		wch: watchservice.New(&watchservice.Config{}),
 		cnf: cnf,

@@ -9,11 +9,7 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func (s *Service) Serve(ctx context.Context, port int) (chan<- string, error) {
-
-	ctx, cancel := context.WithCancelCause(ctx)
-
-	refresh := make(chan string)
+func (s *Service) Serve(ctx context.Context) (chan<- string, error) {
 
 	// check that it exists
 	_, err := os.Stat(s.cnf.WebRoot)
@@ -21,69 +17,29 @@ func (s *Service) Serve(ctx context.Context, port int) (chan<- string, error) {
 		return nil, err
 	}
 
-	fileServer := http.FileServer(http.Dir(s.cnf.WebRoot))
+	// create refresh channel
+	refresh := make(chan string)
 
-	http.Handle("/", fileServer)
+	// filesystem server
+	http.Handle("/", http.FileServer(http.Dir(s.cnf.WebRoot)))
 
-	// events handler
-	http.HandleFunc("/_livereload", func(w http.ResponseWriter, r *http.Request) {
-		ctx := r.Context()
-
-		log.Debug("got livereload handshake from client")
-
-		// Set CORS headers to allow all origins. You may want to restrict this to specific origins in a production environment.
-		w.Header().Set("Access-Control-Allow-Origin", "*")
-		w.Header().Set("Access-Control-Expose-Headers", "Content-Type")
-		w.Header().Set("Content-Type", "text/event-stream")
-		w.Header().Set("Cache-Control", "no-cache")
-		w.Header().Set("Connection", "keep-alive")
-
-		for {
-			select {
-			case refreshMsg := <-refresh:
-				log.Debug("send refresh event", "message", refreshMsg)
-				fmt.Fprintf(w, "data: %s\n\n", refreshMsg)
-				w.(http.Flusher).Flush()
-			case <-ctx.Done():
-				log.Debug("context cancelled, closing livereload connection")
-				return
-			}
-		}
-	})
-
-	log.Info(fmt.Sprintf("server started at http://localhost:%d", port))
-
-	cleanup := func() {
-		close(refresh)
-	}
+	// live reload handler
+	http.HandleFunc("/_livereload", s.getLiveReloadHandler(refresh))
 
 	// server goroutine
-	// will cancel context if there's an error starting the server
 	go func() {
 		for {
 			select {
 			case <-ctx.Done():
+				close(refresh)
 				return
 			default:
-				err := http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+				log.Info(fmt.Sprintf("starting server at http://localhost:%d", s.cnf.Port))
+				err := http.ListenAndServe(fmt.Sprintf(":%d", s.cnf.Port), nil)
 				if err != nil {
-					cancel(err)
+					log.Fatal("error starting server", "error", err)
 					return
 				}
-			}
-		}
-	}()
-
-	// refresh goroutine
-	// this one is responsible for cleanup if the context is cancelled
-	go func() {
-		for {
-			select {
-			case <-refresh:
-				// send refresh SSR
-			case <-ctx.Done():
-				cleanup()
-				return
 			}
 		}
 	}()
