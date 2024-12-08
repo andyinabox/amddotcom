@@ -24,7 +24,7 @@ func (s *Service) Serve(ctx context.Context) (chan<- string, error) {
 	http.Handle("/", http.FileServer(http.Dir(s.cnf.WebRoot)))
 
 	// live reload handler
-	http.HandleFunc("/_livereload", s.getLiveReloadHandler(refresh))
+	http.HandleFunc(liveReloadPath, s.getLiveReloadHandler(refresh))
 
 	// server goroutine
 	go func() {

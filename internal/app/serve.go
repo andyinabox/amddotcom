@@ -8,27 +8,27 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func (b *App) Serve(ctx context.Context, port int) (err error) {
+func (a *App) Serve(ctx context.Context, port int) (err error) {
 
-	snippet := b.srv.GetLiveReloadSnippet()
+	snippet := a.srv.GetLiveReloadSnippet()
 	log.Debug("set livereload snippet", "snippet", snippet)
 	ctx = context.WithValue(ctx, internal.LiveReloadSnippetKey, snippet)
 
 	// make sure to build once
-	err = b.Build(ctx)
+	err = a.Build(ctx)
 	if err != nil {
 		return
 	}
 
-	refreshChan, err := b.srv.Serve(ctx)
+	refreshChan, err := a.srv.Serve(ctx)
 	if err != nil {
 		return
 	}
 
-	changesChan, err := b.wch.Watch(ctx, []string{
-		b.cnf.ContentPath,
-		b.cnf.SrcPath,
-		b.cnf.AssetsPath,
+	changesChan, err := a.wch.Watch(ctx, []string{
+		a.cnf.ContentPath,
+		a.cnf.SrcPath,
+		a.cnf.AssetsPath,
 	})
 	if err != nil {
 		return
@@ -37,7 +37,7 @@ func (b *App) Serve(ctx context.Context, port int) (err error) {
 	// loop over changes in range loop
 	for change := range changesChan {
 		log.Debug("changed", "file", change)
-		err = b.Build(ctx)
+		err = a.Build(ctx)
 		if err != nil {
 			log.Error("error building after changes", "error", err)
 		}
@@ -48,18 +48,3 @@ func (b *App) Serve(ctx context.Context, port int) (err error) {
 
 	return
 }
-
-// func (a *App) buildForReload(ctx context.Context, liveReloadSnippet string) (err error) {
-// 	log.Info("building...")
-
-// 	rc, err := a.ctx.GetRenderContext(ctx)
-// 	if err != nil {
-// 		return
-// 	}
-
-// 	rc.LiveReloadSnippet = template.HTML(liveReloadSnippet)
-
-// 	err = a.cmp.Compile(ctx, *rc)
-// 	return
-
-// }

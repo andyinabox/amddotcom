@@ -1,5 +1,7 @@
 package webservice
 
+const liveReloadPath = "/_livereload"
+
 type Config struct {
 	WebRoot string // path to directory to be served
 	Port    int64
