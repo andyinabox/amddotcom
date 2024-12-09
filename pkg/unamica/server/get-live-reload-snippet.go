@@ -15,5 +15,6 @@ const liveReloadSnippet = `
 `
 
 func (s *Server) GetLiveReloadSnippet() string {
-	return fmt.Sprintf(liveReloadSnippet, "http://localhost:8080/_livereload")
+	url := fmt.Sprintf("http://%s%s", s.srv.Addr, s.cnf.LiveReloadPath)
+	return fmt.Sprintf(liveReloadSnippet, url)
 }

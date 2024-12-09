@@ -1,4 +1,4 @@
-package connectiongroup
+package server
 
 import (
 	"context"
@@ -8,18 +8,21 @@ import (
 	"github.com/google/uuid"
 )
 
-type ConnectionGroup struct {
+// connectionGroup maintains a pool of string channels
+// so that a string message can be sent to all open connections.
+// it will also automatically handle cleanup when the context expires
+type connectionGroup struct {
 	connections map[uuid.UUID]chan string
 	m           sync.Mutex
 }
 
-func New() *ConnectionGroup {
-	return &ConnectionGroup{
+func newConnectionGroup() *connectionGroup {
+	return &connectionGroup{
 		connections: make(map[uuid.UUID]chan string),
 	}
 }
 
-func (c *ConnectionGroup) Add(ctx context.Context) (uuid.UUID, <-chan string) {
+func (c *connectionGroup) Add(ctx context.Context) (uuid.UUID, <-chan string) {
 	key := uuid.New()
 	ch := make(chan string)
 
@@ -36,14 +39,14 @@ func (c *ConnectionGroup) Add(ctx context.Context) (uuid.UUID, <-chan string) {
 	return key, ch
 }
 
-func (c *ConnectionGroup) Remove(key uuid.UUID) {
+func (c *connectionGroup) Remove(key uuid.UUID) {
 	c.m.Lock()
 	close(c.connections[key])
 	delete(c.connections, key)
 	c.m.Unlock()
 }
 
-func (c *ConnectionGroup) Send(msg string) {
+func (c *connectionGroup) Send(msg string) {
 	log.Debug("send message to all channels", "message", msg)
 	c.m.Lock()
 	for _, ch := range c.connections {
@@ -52,6 +55,6 @@ func (c *ConnectionGroup) Send(msg string) {
 	c.m.Unlock()
 }
 
-func (c *ConnectionGroup) Count() int {
+func (c *connectionGroup) Count() int {
 	return len(c.connections)
 }
