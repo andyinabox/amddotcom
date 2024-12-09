@@ -1,15 +1,37 @@
-package internal
+package unamica
 
 import (
 	"context"
 	"html/template"
 )
 
-// structs
-
+// misc
 type ContextKey string
 
 const LiveReloadSnippetKey ContextKey = "LiveReloadSnippet"
+
+// constructor
+
+func New(sc ServiceContainer, cnf *Config) *App {
+	return &App{sc, cnf}
+}
+
+// structs
+type App struct {
+	sc  ServiceContainer
+	cnf *Config
+}
+
+type Config struct {
+	SrcPath           string
+	OutputPath        string
+	ContentPath       string
+	AssetsPath        string
+	SiteDataFileName  string
+	DateFormat        string
+	OutputContextJSON bool
+	Port              int64
+}
 
 type BuildData struct {
 	Time          string
@@ -30,10 +52,10 @@ type RenderContext struct {
 }
 
 // interfaces
-type App interface {
-	Build(context.Context) error
-	Serve(ctx context.Context, port int) error
-}
+// type App interface {
+// 	Build(context.Context) error
+// 	Serve(ctx context.Context, port int) error
+// }
 
 type ContextService interface {
 	GetRenderContext(context.Context) (*RenderContext, error)
@@ -50,4 +72,11 @@ type WebService interface {
 
 type WatchService interface {
 	Watch(str context.Context, paths []string) (changes <-chan string, err error)
+}
+
+type ServiceContainer interface {
+	ContextService() ContextService
+	CompileService() CompileService
+	WebService() WebService
+	WatchService() WatchService
 }
