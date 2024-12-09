@@ -37,7 +37,7 @@ func (r *Renderer) RenderAll(ctx context.Context, rc unamica.RenderContext) erro
 	wg.Add(1)
 	go func() {
 		defer wg.Done()
-		copyErr := r.copyAssets()
+		copyErr := r.CopyAssets(ctx)
 		if copyErr != nil {
 			log.Error("error copying assets", "error", err)
 		}
@@ -66,6 +66,8 @@ func (r *Renderer) RenderAll(ctx context.Context, rc unamica.RenderContext) erro
 	}
 
 	wg.Wait()
+
+	log.Debug("render all waitgroup resolved")
 
 	return nil
 }

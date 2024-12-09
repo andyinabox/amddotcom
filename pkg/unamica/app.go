@@ -52,10 +52,6 @@ type RenderContext struct {
 }
 
 // interfaces
-// type App interface {
-// 	Build(context.Context) error
-// 	Serve(ctx context.Context, port int) error
-// }
 
 type ContentParser interface {
 	GetRenderContext(context.Context) (*RenderContext, error)
@@ -64,11 +60,13 @@ type ContentParser interface {
 type Renderer interface {
 	RenderAll(ctx context.Context, rc RenderContext) error
 	RenderSingle(ctx context.Context, rc RenderContext, path string) error
+	CopyAssets(ctx context.Context) error
 }
 
 type Server interface {
 	Serve(ctx context.Context) (refresh chan<- string, err error)
 	GetLiveReloadSnippet() string
+	HasLiveReloadConnection() bool
 }
 
 type Watcher interface {

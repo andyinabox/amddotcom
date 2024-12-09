@@ -36,13 +36,17 @@ func (a *App) Serve(ctx context.Context, port int) (err error) {
 	// loop over changes in range loop
 	for change := range changesChan {
 		log.Debug("changed", "file", change)
-		err = a.Build(ctx)
+		err = a.BuildSingle(ctx, change)
 		if err != nil {
 			log.Error("error building after changes", "error", err)
 		}
-		// don't send the whole path, just the file name
-		log.Info("refresh browser")
-		refreshChan <- filepath.Base(change)
+
+		// only send refresh if there is a livereload connection
+		// NOTE: Server should really do this under the hood
+		if a.sc.Server().HasLiveReloadConnection() {
+			log.Info("refresh browser")
+			refreshChan <- filepath.Base(change)
+		}
 	}
 
 	return

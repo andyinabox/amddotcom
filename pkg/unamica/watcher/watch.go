@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 
+	"github.com/charmbracelet/log"
 	"github.com/fsnotify/fsnotify"
 )
 
@@ -40,8 +41,13 @@ func (w *Watcher) Watch(ctx context.Context, paths []string) (<-chan string, err
 					return
 				}
 
-				// pass on the filename
-				changes <- event.Name
+				log.Debug("recieved fsnotify event", "event", event.Name, "op", event.Op)
+
+				// skip CHMOD events because it was leading
+				// to extra events being fired (and not really what we want)
+				if event.Op != fsnotify.Chmod {
+					changes <- event.Name
+				}
 
 			// new error
 			case watchErr, ok := <-watcher.Errors:

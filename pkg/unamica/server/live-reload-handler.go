@@ -9,9 +9,14 @@ import (
 
 func (s *Server) getLiveReloadHandler(refresh <-chan string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
+		s.liveReloadConnections += 1
+		defer func() {
+			s.liveReloadConnections -= 1
+		}()
+
 		ctx := r.Context()
 
-		log.Debug("got livereload handshake from client")
+		log.Debugf("got livereload handshake from client, %d connections open", s.liveReloadConnections)
 
 		// Set CORS headers to allow all origins. You may want to restrict this to specific origins in a production environment.
 		w.Header().Set("Access-Control-Allow-Origin", "*")

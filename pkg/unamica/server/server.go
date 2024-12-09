@@ -6,9 +6,10 @@ type Config struct {
 }
 
 type Server struct {
-	cnf *Config
+	cnf                   *Config
+	liveReloadConnections int
 }
 
 func New(cnf *Config) *Server {
-	return &Server{cnf}
+	return &Server{cnf, 0}
 }

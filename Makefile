@@ -9,5 +9,5 @@ clean:
 
 .PHONY: serve
 serve:
-	go run cmd/unamica/main.go serve -v
+	go run cmd/unamica/main.go serve
 
