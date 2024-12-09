@@ -14,5 +14,5 @@ func (a *App) Build(ctx context.Context) (err error) {
 		return
 	}
 
-	return a.sc.Renderer().Render(ctx, *rc)
+	return a.sc.Renderer().RenderAll(ctx, *rc)
 }

@@ -62,7 +62,8 @@ type ContentParser interface {
 }
 
 type Renderer interface {
-	Render(context.Context, RenderContext) error
+	RenderAll(ctx context.Context, rc RenderContext) error
+	RenderSingle(ctx context.Context, rc RenderContext, path string) error
 }
 
 type Server interface {
@@ -71,7 +72,7 @@ type Server interface {
 }
 
 type Watcher interface {
-	Watch(str context.Context, paths []string) (changes <-chan string, err error)
+	Watch(ctx context.Context, paths []string) (changes <-chan string, err error)
 }
 
 type ServiceContainer interface {

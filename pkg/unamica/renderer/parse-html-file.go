@@ -2,7 +2,6 @@ package renderer
 
 import (
 	"html/template"
-	"io/fs"
 	"os"
 	"path/filepath"
 	"strings"
@@ -11,19 +10,22 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func (r *Renderer) parseHtmlTemplate(f fs.DirEntry, rc unamica.RenderContext) (err error) {
+func (r *Renderer) parseHtmlTemplate(absPath string, rc unamica.RenderContext) (err error) {
+
+	fn := filepath.Base(absPath)
+
 	var b []byte
-	b, err = os.ReadFile(filepath.Join(r.cnf.SrcPath, f.Name()))
+	b, err = os.ReadFile(absPath)
 	if err != nil {
 		return
 	}
 
-	tmpl, err := template.New(f.Name()).Parse(string(b))
+	tmpl, err := template.New(fn).Parse(string(b))
 	if err != nil {
 		return
 	}
 
-	outFile := filepath.Join(r.cnf.OutputPath, strings.Replace(f.Name(), ".tmpl", "", 1))
+	outFile := filepath.Join(r.cnf.OutputPath, strings.Replace(fn, ".tmpl", "", 1))
 	log.Debug("parse html file", "file", outFile)
 
 	out, err := os.Create(outFile)
@@ -32,7 +34,7 @@ func (r *Renderer) parseHtmlTemplate(f fs.DirEntry, rc unamica.RenderContext) (e
 	}
 	defer out.Close()
 
-	err = tmpl.ExecuteTemplate(out, f.Name(), rc)
+	err = tmpl.ExecuteTemplate(out, fn, rc)
 
 	return
 }
