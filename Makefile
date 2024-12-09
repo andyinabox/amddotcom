@@ -1,17 +1,13 @@
 
 .PHONY: build
-build: clean unamica
-	./unamica build
+build: clean
+	go run cmd/unamica/main.go build
 
 .PHONY: clean
 clean:
 	rm -rf publish
-	rm unamica
 
 .PHONY: serve
-serve: unamica
-	./unamica serve -v
+serve:
+	go run cmd/unamica/main.go serve -v
 
-
-unamica:
-	go build -o unamica cmd/unamica/main.go
