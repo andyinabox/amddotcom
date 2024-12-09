@@ -57,26 +57,26 @@ type RenderContext struct {
 // 	Serve(ctx context.Context, port int) error
 // }
 
-type ContextService interface {
+type ContentParser interface {
 	GetRenderContext(context.Context) (*RenderContext, error)
 }
 
-type CompileService interface {
-	Compile(context.Context, RenderContext) error
+type Renderer interface {
+	Render(context.Context, RenderContext) error
 }
 
-type WebService interface {
+type Server interface {
 	Serve(ctx context.Context) (refresh chan<- string, err error)
 	GetLiveReloadSnippet() string
 }
 
-type WatchService interface {
+type Watcher interface {
 	Watch(str context.Context, paths []string) (changes <-chan string, err error)
 }
 
 type ServiceContainer interface {
-	ContextService() ContextService
-	CompileService() CompileService
-	WebService() WebService
-	WatchService() WatchService
+	ContentParser() ContentParser
+	Renderer() Renderer
+	Server() Server
+	Watcher() Watcher
 }

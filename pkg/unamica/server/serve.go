@@ -1,4 +1,4 @@
-package webservice
+package server
 
 import (
 	"context"
@@ -9,7 +9,7 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func (s *Service) Serve(ctx context.Context) (chan<- string, error) {
+func (s *Server) Serve(ctx context.Context) (chan<- string, error) {
 
 	// check that it exists
 	_, err := os.Stat(s.cnf.WebRoot)

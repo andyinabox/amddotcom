@@ -1,4 +1,4 @@
-package compileservice
+package renderer
 
 import (
 	"html/template"
@@ -11,9 +11,9 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func (s *Service) parseHtmlTemplate(f fs.DirEntry, rc unamica.RenderContext) (err error) {
+func (r *Renderer) parseHtmlTemplate(f fs.DirEntry, rc unamica.RenderContext) (err error) {
 	var b []byte
-	b, err = os.ReadFile(filepath.Join(s.cnf.SrcPath, f.Name()))
+	b, err = os.ReadFile(filepath.Join(r.cnf.SrcPath, f.Name()))
 	if err != nil {
 		return
 	}
@@ -23,7 +23,7 @@ func (s *Service) parseHtmlTemplate(f fs.DirEntry, rc unamica.RenderContext) (er
 		return
 	}
 
-	outFile := filepath.Join(s.cnf.OutputPath, strings.Replace(f.Name(), ".tmpl", "", 1))
+	outFile := filepath.Join(r.cnf.OutputPath, strings.Replace(f.Name(), ".tmpl", "", 1))
 	log.Debug("parse html file", "file", outFile)
 
 	out, err := os.Create(outFile)

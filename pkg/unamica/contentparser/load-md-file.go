@@ -1,4 +1,4 @@
-package contextservice
+package contentparser
 
 import (
 	"html/template"
@@ -11,11 +11,11 @@ import (
 	"github.com/russross/blackfriday/v2"
 )
 
-func (s *Service) loadMdFile(entry fs.DirEntry) (data *unamica.MarkdownFile, err error) {
+func (p *Parser) loadMdFile(entry fs.DirEntry) (data *unamica.MarkdownFile, err error) {
 	var md []byte
 
 	// read raw markdown
-	md, err = os.ReadFile(filepath.Join(s.conf.ContentPath, entry.Name()))
+	md, err = os.ReadFile(filepath.Join(p.cnf.ContentPath, entry.Name()))
 	if err != nil {
 		return
 	}

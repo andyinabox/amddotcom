@@ -1,4 +1,4 @@
-package watchservice
+package watcher
 
 import (
 	"context"
@@ -8,7 +8,7 @@ import (
 	"github.com/fsnotify/fsnotify"
 )
 
-func (s *Service) Watch(ctx context.Context, paths []string) (<-chan string, error) {
+func (w *Watcher) Watch(ctx context.Context, paths []string) (<-chan string, error) {
 
 	// set up channels for channel group
 	changes := make(chan string)

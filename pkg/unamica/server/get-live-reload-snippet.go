@@ -1,4 +1,4 @@
-package webservice
+package server
 
 import "fmt"
 
@@ -14,6 +14,6 @@ const liveReloadSnippet = `
 </script>
 `
 
-func (s *Service) GetLiveReloadSnippet() string {
+func (s *Server) GetLiveReloadSnippet() string {
 	return fmt.Sprintf(liveReloadSnippet, "http://localhost:8080/_livereload")
 }

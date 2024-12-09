@@ -1,4 +1,4 @@
-package webservice
+package server
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func (*Service) getLiveReloadHandler(refresh <-chan string) http.HandlerFunc {
+func (s *Server) getLiveReloadHandler(refresh <-chan string) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx := r.Context()
 

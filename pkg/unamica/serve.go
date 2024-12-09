@@ -9,7 +9,7 @@ import (
 
 func (a *App) Serve(ctx context.Context, port int) (err error) {
 
-	snippet := a.sc.WebService().GetLiveReloadSnippet()
+	snippet := a.sc.Server().GetLiveReloadSnippet()
 	log.Debug("set livereload snippet", "snippet", snippet)
 	ctx = context.WithValue(ctx, LiveReloadSnippetKey, snippet)
 
@@ -19,12 +19,12 @@ func (a *App) Serve(ctx context.Context, port int) (err error) {
 		return
 	}
 
-	refreshChan, err := a.sc.WebService().Serve(ctx)
+	refreshChan, err := a.sc.Server().Serve(ctx)
 	if err != nil {
 		return
 	}
 
-	changesChan, err := a.sc.WatchService().Watch(ctx, []string{
+	changesChan, err := a.sc.Watcher().Watch(ctx, []string{
 		a.cnf.ContentPath,
 		a.cnf.SrcPath,
 		a.cnf.AssetsPath,

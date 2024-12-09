@@ -9,10 +9,10 @@ import (
 func (a *App) Build(ctx context.Context) (err error) {
 	log.Info("building...")
 
-	rc, err := a.sc.ContextService().GetRenderContext(ctx)
+	rc, err := a.sc.ContentParser().GetRenderContext(ctx)
 	if err != nil {
 		return
 	}
 
-	return a.sc.CompileService().Compile(ctx, *rc)
+	return a.sc.Renderer().Render(ctx, *rc)
 }

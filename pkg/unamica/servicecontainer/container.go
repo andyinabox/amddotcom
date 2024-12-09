@@ -2,35 +2,35 @@ package servicecontainer
 
 import (
 	"github.com/amddotcom/pkg/unamica"
-	"github.com/amddotcom/pkg/unamica/compileservice"
-	"github.com/amddotcom/pkg/unamica/contextservice"
-	"github.com/amddotcom/pkg/unamica/watchservice"
-	"github.com/amddotcom/pkg/unamica/webservice"
+	"github.com/amddotcom/pkg/unamica/contentparser"
+	"github.com/amddotcom/pkg/unamica/renderer"
+	"github.com/amddotcom/pkg/unamica/server"
+	"github.com/amddotcom/pkg/unamica/watcher"
 )
 
 type Container struct {
-	compileService unamica.CompileService
-	contextService unamica.ContextService
-	watchService   unamica.WatchService
-	webService     unamica.WebService
-	cnf            *unamica.Config
+	renderer unamica.Renderer
+	parser   unamica.ContentParser
+	watcher  unamica.Watcher
+	server   unamica.Server
+	cnf      *unamica.Config
 }
 
 func New(cnf *unamica.Config) *Container {
 	return &Container{
-		compileService: compileservice.New(&compileservice.Config{
+		renderer: renderer.New(&renderer.Config{
 			SrcPath:           cnf.SrcPath,
 			OutputPath:        cnf.OutputPath,
 			AssetsPath:        cnf.AssetsPath,
 			OutputContextJSON: cnf.OutputContextJSON,
 		}),
-		contextService: contextservice.New(&contextservice.Config{
+		parser: contentparser.New(&contentparser.Config{
 			ContentPath:      cnf.ContentPath,
 			SiteDataFileName: cnf.SiteDataFileName,
 			DateFormat:       cnf.DateFormat,
 		}),
-		watchService: watchservice.New(&watchservice.Config{}),
-		webService: webservice.New(&webservice.Config{
+		watcher: watcher.New(),
+		server: server.New(&server.Config{
 			WebRoot: cnf.OutputPath,
 			Port:    cnf.Port,
 		}),
@@ -38,18 +38,18 @@ func New(cnf *unamica.Config) *Container {
 	}
 }
 
-func (c *Container) CompileService() unamica.CompileService {
-	return c.compileService
+func (c *Container) Renderer() unamica.Renderer {
+	return c.renderer
 }
 
-func (c *Container) ContextService() unamica.ContextService {
-	return c.contextService
+func (c *Container) ContentParser() unamica.ContentParser {
+	return c.parser
 }
 
-func (c *Container) WatchService() unamica.WatchService {
-	return c.watchService
+func (c *Container) Watcher() unamica.Watcher {
+	return c.watcher
 }
 
-func (c *Container) WebService() unamica.WebService {
-	return c.webService
+func (c *Container) Server() unamica.Server {
+	return c.server
 }

@@ -1,4 +1,4 @@
-package compileservice
+package renderer
 
 import (
 	"context"
@@ -10,40 +10,40 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func (s *Service) Compile(ctx context.Context, rc unamica.RenderContext) (err error) {
+func (r *Renderer) Render(ctx context.Context, rc unamica.RenderContext) (err error) {
 
-	files, err := os.ReadDir(s.cnf.SrcPath)
+	files, err := os.ReadDir(r.cnf.SrcPath)
 	if err != nil {
 		return
 	}
 
 	for _, file := range files {
 		if file.Name() == "index.html.tmpl" {
-			copyErr := s.parseHtmlTemplate(file, rc)
+			copyErr := r.parseHtmlTemplate(file, rc)
 			if copyErr != nil {
 				log.Error(copyErr)
 			}
 		} else {
-			copyErr := s.copyFile(file)
+			copyErr := r.copyFile(file)
 			if copyErr != nil {
 				log.Error(copyErr)
 			}
 		}
 	}
 
-	err = s.copyAssets()
+	err = r.copyAssets()
 	if err != nil {
 		return
 	}
 
-	if s.cnf.OutputContextJSON {
+	if r.cnf.OutputContextJSON {
 		var data []byte
 		data, err = json.Marshal(rc)
 		if err != nil {
 			return
 		}
 
-		contextFilePath := filepath.Join(s.cnf.OutputPath, "context.json")
+		contextFilePath := filepath.Join(r.cnf.OutputPath, "context.json")
 		log.Debug("output context file", "file", contextFilePath)
 		err = os.WriteFile(contextFilePath, data, os.ModePerm)
 	}

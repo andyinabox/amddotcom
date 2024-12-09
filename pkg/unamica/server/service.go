@@ -1,14 +1,14 @@
-package webservice
+package server
 
 type Config struct {
 	WebRoot string // path to directory to be served
 	Port    int64
 }
 
-type Service struct {
+type Server struct {
 	cnf *Config
 }
 
-func New(cnf *Config) *Service {
-	return &Service{cnf}
+func New(cnf *Config) *Server {
+	return &Server{cnf}
 }

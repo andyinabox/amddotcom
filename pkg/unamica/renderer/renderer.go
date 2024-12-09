@@ -1,4 +1,4 @@
-package compileservice
+package renderer
 
 type Config struct {
 	SrcPath           string
@@ -7,10 +7,10 @@ type Config struct {
 	OutputContextJSON bool
 }
 
-type Service struct {
+type Renderer struct {
 	cnf *Config
 }
 
-func New(cnf *Config) *Service {
-	return &Service{cnf}
+func New(cnf *Config) *Renderer {
+	return &Renderer{cnf}
 }
