@@ -7,11 +7,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/amddotcom/internal"
+	"github.com/amddotcom/unamica"
 	"github.com/charmbracelet/log"
 )
 
-func (s *Service) parseHtmlTemplate(f fs.DirEntry, rc internal.RenderContext) (err error) {
+func (s *Service) parseHtmlTemplate(f fs.DirEntry, rc unamica.RenderContext) (err error) {
 	var b []byte
 	b, err = os.ReadFile(filepath.Join(s.cnf.SrcPath, f.Name()))
 	if err != nil {

@@ -6,11 +6,11 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/amddotcom/internal"
+	"github.com/amddotcom/unamica"
 	"github.com/charmbracelet/log"
 )
 
-func (s *Service) Compile(ctx context.Context, rc internal.RenderContext) (err error) {
+func (s *Service) Compile(ctx context.Context, rc unamica.RenderContext) (err error) {
 
 	files, err := os.ReadDir(s.cnf.SrcPath)
 	if err != nil {

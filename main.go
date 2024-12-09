@@ -6,7 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/amddotcom/internal/app"
+	"github.com/amddotcom/unamica/app"
 	"github.com/charmbracelet/log"
 	"github.com/urfave/cli/v3"
 )

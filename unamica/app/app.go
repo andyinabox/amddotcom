@@ -1,11 +1,11 @@
 package app
 
 import (
-	"github.com/amddotcom/internal"
-	"github.com/amddotcom/internal/compileservice"
-	"github.com/amddotcom/internal/contextservice"
-	"github.com/amddotcom/internal/watchservice"
-	"github.com/amddotcom/internal/webservice"
+	"github.com/amddotcom/unamica"
+	"github.com/amddotcom/unamica/compileservice"
+	"github.com/amddotcom/unamica/contextservice"
+	"github.com/amddotcom/unamica/watchservice"
+	"github.com/amddotcom/unamica/webservice"
 )
 
 type Config struct {
@@ -20,10 +20,10 @@ type Config struct {
 }
 
 type App struct {
-	cmp internal.CompileService
-	ctx internal.ContextService
-	srv internal.WebService
-	wch internal.WatchService
+	cmp unamica.CompileService
+	ctx unamica.ContextService
+	srv unamica.WebService
+	wch unamica.WatchService
 	cnf *Config
 }
 

@@ -6,12 +6,12 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/amddotcom/internal"
+	"github.com/amddotcom/unamica"
 	"github.com/microcosm-cc/bluemonday"
 	"github.com/russross/blackfriday/v2"
 )
 
-func (s *Service) loadMdFile(entry fs.DirEntry) (data *internal.MarkdownFile, err error) {
+func (s *Service) loadMdFile(entry fs.DirEntry) (data *unamica.MarkdownFile, err error) {
 	var md []byte
 
 	// read raw markdown
@@ -27,7 +27,7 @@ func (s *Service) loadMdFile(entry fs.DirEntry) (data *internal.MarkdownFile, er
 	sanitizer := bluemonday.StrictPolicy()
 	clean := sanitizer.Sanitize(parsed)
 
-	data = &internal.MarkdownFile{
+	data = &unamica.MarkdownFile{
 		Source: string(md),
 		Text:   clean,
 		HTML:   template.HTML(parsed),

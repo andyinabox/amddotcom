@@ -6,13 +6,13 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func (b *App) Build(ctx context.Context) (err error) {
+func (a *App) Build(ctx context.Context) (err error) {
 	log.Info("building...")
 
-	rc, err := b.ctx.GetRenderContext(ctx)
+	rc, err := a.ctx.GetRenderContext(ctx)
 	if err != nil {
 		return
 	}
 
-	return b.cmp.Compile(ctx, *rc)
+	return a.cmp.Compile(ctx, *rc)
 }

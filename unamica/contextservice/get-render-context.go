@@ -10,10 +10,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/amddotcom/internal"
+	"github.com/amddotcom/unamica"
 )
 
-func (s *Service) GetRenderContext(ctx context.Context) (rc *internal.RenderContext, err error) {
+func (s *Service) GetRenderContext(ctx context.Context) (rc *unamica.RenderContext, err error) {
 
 	files, err := os.ReadDir(s.conf.ContentPath)
 	if err != nil {
@@ -22,13 +22,13 @@ func (s *Service) GetRenderContext(ctx context.Context) (rc *internal.RenderCont
 
 	now := time.Now()
 
-	rc = &internal.RenderContext{
-		BuildData: internal.BuildData{
+	rc = &unamica.RenderContext{
+		BuildData: unamica.BuildData{
 			Time:          now.Format(time.RFC3339),
 			TimeFormatted: now.Format(s.conf.DateFormat),
 		},
 		SiteData: make(map[string]string),
-		Pages:    make(map[string]internal.MarkdownFile),
+		Pages:    make(map[string]unamica.MarkdownFile),
 	}
 
 	for _, file := range files {
@@ -49,7 +49,7 @@ func (s *Service) GetRenderContext(ctx context.Context) (rc *internal.RenderCont
 
 		// load markdown pages
 		if filepath.Ext(file.Name()) == ".md" {
-			var m *internal.MarkdownFile
+			var m *unamica.MarkdownFile
 			m, err = s.loadMdFile(file)
 			if err != nil {
 				return
@@ -59,7 +59,7 @@ func (s *Service) GetRenderContext(ctx context.Context) (rc *internal.RenderCont
 
 	}
 
-	snippet := ctx.Value(internal.LiveReloadSnippetKey)
+	snippet := ctx.Value(unamica.LiveReloadSnippetKey)
 	if snippet != nil {
 		rc.LiveReloadSnippet = template.HTML(snippet.(string))
 	}
