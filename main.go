@@ -6,7 +6,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/amddotcom/unamica/app"
+	"github.com/amddotcom/unamica"
+	"github.com/amddotcom/unamica/servicecontainer"
 	"github.com/charmbracelet/log"
 	"github.com/urfave/cli/v3"
 )
@@ -19,7 +20,7 @@ func main() {
 	var port int64
 	var debug bool
 
-	cnf := &app.Config{}
+	cnf := &unamica.Config{}
 
 	defaultFlags := []cli.Flag{
 		&cli.StringFlag{
@@ -80,7 +81,7 @@ func main() {
 		Destination: &cnf.Port,
 	})
 
-	preparePaths := func(cnf *app.Config) (err error) {
+	createApp := func(cnf *unamica.Config) (app *unamica.App, err error) {
 		// get absolute paths
 		cnf.OutputPath, err = filepath.Abs(cnf.OutputPath)
 		if err != nil {
@@ -101,6 +102,10 @@ func main() {
 
 		// make sure output path exists
 		err = os.MkdirAll(cnf.OutputPath, fs.ModePerm)
+
+		sc := servicecontainer.New(cnf)
+		app = unamica.New(sc, cnf)
+
 		return
 	}
 
@@ -115,8 +120,10 @@ func main() {
 					if debug {
 						log.SetLevel(log.DebugLevel)
 					}
-					preparePaths(cnf)
-					app := app.New(cnf)
+					app, err := createApp(cnf)
+					if err != nil {
+						return
+					}
 					return app.Build(ctx)
 				},
 			},
@@ -129,8 +136,10 @@ func main() {
 					if debug {
 						log.SetLevel(log.DebugLevel)
 					}
-					preparePaths(cnf)
-					app := app.New(cnf)
+					app, err := createApp(cnf)
+					if err != nil {
+						return
+					}
 					return app.Serve(ctx, int(port))
 				},
 			},

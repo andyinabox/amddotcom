@@ -1,18 +1,17 @@
-package app
+package unamica
 
 import (
 	"context"
 	"path/filepath"
 
-	"github.com/amddotcom/unamica"
 	"github.com/charmbracelet/log"
 )
 
 func (a *App) Serve(ctx context.Context, port int) (err error) {
 
-	snippet := a.srv.GetLiveReloadSnippet()
+	snippet := a.sc.WebService().GetLiveReloadSnippet()
 	log.Debug("set livereload snippet", "snippet", snippet)
-	ctx = context.WithValue(ctx, unamica.LiveReloadSnippetKey, snippet)
+	ctx = context.WithValue(ctx, LiveReloadSnippetKey, snippet)
 
 	// make sure to build once
 	err = a.Build(ctx)
@@ -20,12 +19,12 @@ func (a *App) Serve(ctx context.Context, port int) (err error) {
 		return
 	}
 
-	refreshChan, err := a.srv.Serve(ctx)
+	refreshChan, err := a.sc.WebService().Serve(ctx)
 	if err != nil {
 		return
 	}
 
-	changesChan, err := a.wch.Watch(ctx, []string{
+	changesChan, err := a.sc.WatchService().Watch(ctx, []string{
 		a.cnf.ContentPath,
 		a.cnf.SrcPath,
 		a.cnf.AssetsPath,

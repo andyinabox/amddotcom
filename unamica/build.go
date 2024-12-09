@@ -1,4 +1,4 @@
-package app
+package unamica
 
 import (
 	"context"
@@ -9,10 +9,10 @@ import (
 func (a *App) Build(ctx context.Context) (err error) {
 	log.Info("building...")
 
-	rc, err := a.ctx.GetRenderContext(ctx)
+	rc, err := a.sc.ContextService().GetRenderContext(ctx)
 	if err != nil {
 		return
 	}
 
-	return a.cmp.Compile(ctx, *rc)
+	return a.sc.CompileService().Compile(ctx, *rc)
 }
