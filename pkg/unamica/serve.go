@@ -43,10 +43,9 @@ func (a *App) Serve(ctx context.Context, port int) (err error) {
 
 		// only send refresh if there is a livereload connection
 		// NOTE: Server should really do this under the hood
-		if a.sc.Server().HasLiveReloadConnection() {
-			log.Info("refresh browser")
-			refreshChan <- filepath.Base(change)
-		}
+		log.Info("refresh browser")
+		refreshChan <- filepath.Base(change)
+
 	}
 
 	return

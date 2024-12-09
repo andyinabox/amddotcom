@@ -7,16 +7,12 @@ import (
 	"github.com/charmbracelet/log"
 )
 
-func (s *Server) getLiveReloadHandler(refresh <-chan string) http.HandlerFunc {
+func (s *Server) getLiveReloadHandler() http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		s.liveReloadConnections += 1
-		defer func() {
-			s.liveReloadConnections -= 1
-		}()
-
 		ctx := r.Context()
+		_, ch := s.cg.Add(ctx)
 
-		log.Debugf("got livereload handshake from client, %d connections open", s.liveReloadConnections)
+		log.Debugf("got livereload handshake from client, %d connections open", s.cg.Count())
 
 		// Set CORS headers to allow all origins. You may want to restrict this to specific origins in a production environment.
 		w.Header().Set("Access-Control-Allow-Origin", "*")
@@ -27,7 +23,7 @@ func (s *Server) getLiveReloadHandler(refresh <-chan string) http.HandlerFunc {
 
 		for {
 			select {
-			case refreshMsg := <-refresh:
+			case refreshMsg := <-ch:
 				log.Debug("send refresh event", "message", refreshMsg)
 				fmt.Fprintf(w, "data: %s\n\n", refreshMsg)
 				w.(http.Flusher).Flush()

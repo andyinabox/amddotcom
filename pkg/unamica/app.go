@@ -66,7 +66,6 @@ type Renderer interface {
 type Server interface {
 	Serve(ctx context.Context) (refresh chan<- string, err error)
 	GetLiveReloadSnippet() string
-	HasLiveReloadConnection() bool
 }
 
 type Watcher interface {

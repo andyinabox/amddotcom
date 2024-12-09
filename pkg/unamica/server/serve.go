@@ -3,7 +3,6 @@ package server
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"os"
 
 	"github.com/charmbracelet/log"
@@ -20,26 +19,27 @@ func (s *Server) Serve(ctx context.Context) (chan<- string, error) {
 	// create refresh channel
 	refresh := make(chan string)
 
-	// filesystem server
-	http.Handle("/", http.FileServer(http.Dir(s.cnf.WebRoot)))
-
-	// live reload handler
-	http.HandleFunc("/_livereload", s.getLiveReloadHandler(refresh))
-
 	// server goroutine
+	go func() {
+		log.Info(fmt.Sprintf("starting server at%s", s.srv.Addr))
+		err := s.srv.ListenAndServe()
+		if err != nil {
+			log.Fatal("error starting server", "error", err)
+			return
+		}
+	}()
+
+	// message reiver goroutine
 	go func() {
 		for {
 			select {
+			case msg := <-refresh:
+				log.Debug("recieved refresh event", "message", msg)
+				s.cg.Send(msg)
 			case <-ctx.Done():
+				s.srv.Shutdown(ctx)
 				close(refresh)
 				return
-			default:
-				log.Info(fmt.Sprintf("starting server at http://localhost:%d", s.cnf.Port))
-				err := http.ListenAndServe(fmt.Sprintf(":%d", s.cnf.Port), nil)
-				if err != nil {
-					log.Fatal("error starting server", "error", err)
-					return
-				}
 			}
 		}
 	}()
