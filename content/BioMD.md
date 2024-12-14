@@ -1,1 +1,1 @@
-I’m an artist and programmer based in Barcelona. I help build the software at [Lighter](https://www.lighterculture.com/), and spend a lot of my spare time on my bicycle.
+I’m an artist and programmer based in Barcelona. I help build the software at [Lighter](https://www.lighterculture.com/), and just finished a project called [_Tender Buttons_](https://tenderbuttons.click/).
